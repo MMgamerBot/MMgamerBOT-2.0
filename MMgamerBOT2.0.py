@@ -19,7 +19,7 @@ async def help(ctx):
 	if False:
 		pass
 	else:
-		embed=discord.Embed(title="Help menu for {}".format(bot.user.name), description="```diff \n - !help <category/command> - helps you with stuff \n - !warn <user> <reason> - warn those spammy idiots \n - !ping - check the bot latency \n - !kick <user> - kick ennoying people \n - !embed - tests a embed \n - !delete <amount> - clear spam \n - !info <user> - gets info about a user \n```".format(user.name), color=0x66009D)
+		embed=discord.Embed(title="Help", description="```diff \n - !help <category/command> - helps you with stuff \n - !warn <user> <reason> - warn those spammy idiots \n - !ping - check the bot latency \n - !kick <user> - kick ennoying people \n - !embed - tests a embed \n - !delete <amount> - clear spam \n - !info <user> - gets info about a user \n```".format(user.name), color=0x66009D)
 		await bot.say(embed=embed)
 
 
