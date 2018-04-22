@@ -5,12 +5,25 @@ import asyncio
 import os
 
 bot = commands.Bot(command_prefix='!')
+bot.remove_command('help')
 
 @bot.event
 async def on_ready():
     print ("Ready when you are xd")
     print ("I am running on " + bot.user.name)
     print ("With the ID: " + bot.user.id)
+
+@bot.command(pass_context=True)
+async def help(ctx, thing):
+	#Help categorys coming soon
+	if False:
+		pass
+	else:
+		embed=discord.Embed(title="Help menu for {}".format(bot.user.name), description="```diff \n - !help <category/command> - helps you with stuff \n - !warn <user> <reason> - warn those spammy idiots \n - !ping - check the bot latency \n - !kick <user> - kick ennoying people \n - !embed - tests a embed \n - !delete <amount> - clear spam \n - !info <user> - gets info about a user \n```".format(user.name), color=0x66009D)
+		await bot.say(embed=embed)
+
+
+
 
 @bot.command(pass_context=True)
 async def ping(ctx):
