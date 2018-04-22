@@ -34,13 +34,12 @@ async def ban(ctx):
 	if ctx.message.author.server_permissions.administrator:
 		try:
 			await bot.kick(user)
-    		await bot.say(":boot: Cya never again {}! CUS UR BANNED!".format(user.name))
-    	except Exception as e:
-    		embed=discord.Embed(title="ERROR".format(user.name), description="Error: \n {}".format(str(e)), color=0x66009D)
-    		await bot.say(embed=embed)
-    else:
-    	await bot.say("You dont have perms")
-
+			await bot.say(":boot: Cya never again {}! CUS UR BANNED!".format(user.name))
+		except Exception as e:
+			embed=discord.Embed(title="ERROR".format(user.name), description="Error: \n {}".format(str(e)), color=0x66009D)
+			await bot.say(embed=embed)
+	else:
+		await bot.say("You dont have perms")
 
 @bot.command(pass_context=True)
 async def info(ctx, user: discord.Member):
@@ -81,12 +80,12 @@ async def kick(ctx, user: discord.Member):
 	if ctx.message.author.server_permissions.administrator:
 		try:
 			await bot.kick(user)
-    		await bot.say(":boot: Cya, {}. Ya loser!".format(user.name))
-    	except Exception as e:
-    		embed=discord.Embed(title="ERROR".format(user.name), description="Error: \n {}".format(str(e)), color=0x66009D)
-    		await bot.say(embed=embed)
-    else:
-    	await bot.say("You dont have perms")
+			await bot.say(":boot: Cya, {}. Ya loser!".format(user.name))
+		except Exception as e:
+			embed=discord.Embed(title="ERROR".format(user.name), description="Error: \n {}".format(str(e)), color=0x66009D)
+			await bot.say(embed=embed)
+	else:
+		await bot.say("You dont have perms")
 @bot.command(pass_context=True)
 async def embed(ctx):
     embed = discord.Embed(title="test", description="my name jeff", color=0x00ff00)
