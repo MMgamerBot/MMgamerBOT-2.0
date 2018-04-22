@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import Bot
 import asyncio
-import chalk
 import os
 
 bot = commands.Bot(command_prefix='!')
@@ -31,4 +30,4 @@ async def kick(ctx, user: discord.Member):
     await bot.say(":boot: Cya, {}. Ya loser!".format(user.name))
     await bot.kick(user)
 
-bot.run(os.getenv('TOKEN')
+bot.run("TOKEN")
