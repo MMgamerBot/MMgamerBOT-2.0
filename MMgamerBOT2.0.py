@@ -27,7 +27,7 @@ async def info(ctx, user: discord.Member):
 	embed.add_field(name="Joined at: ", value=user.joined_at, inline=False)
 	await bot.say(embed=embed)
 @client.command(pass_context=True)
-async def warn(ctx, userName: discord.Member, , reason: str):
+async def warn(ctx, userName: discord.Member, reason: str):
     if "Staff" in [role.name for role in ctx.message.author.roles] or ctx.message.author.server_permissions.administrator:
         embed = discord.Embed(title="Warned", description="{} You have been warned for **{}***".format(userName.mention, reason))
         embed.set_thumbnail(url=userName.avatar_url)
