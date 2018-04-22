@@ -22,7 +22,7 @@ async def info(ctx, user: discord.Member):
 	embed=discord.Embed(title="Stats for {}".format(user.name), description="Show {} stats".format(user.name), color=0x66009D)
 	embed.add_field(name="Name: ", value=user.name, inline=False)
 	embed.add_field(name="ID: ", value=user.id, inline=False)
-	embed.add_field(name="Status: ", value=user.id, inline=False)
+	embed.add_field(name="Status: ", value=user.status, inline=False)
 	embed.add_field(name="Top role: ", value=user.top_role, inline=False)
 	embed.add_field(name="Joined at: ", value=user.joined_at, inline=False)
 	await bot.say(embed=embed)
