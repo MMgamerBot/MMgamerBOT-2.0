@@ -26,15 +26,30 @@ async def info(ctx, user: discord.Member):
 	embed.add_field(name="Top role: ", value=user.top_role, inline=False)
 	embed.add_field(name="Joined at: ", value=user.joined_at, inline=False)
 	await bot.say(embed=embed)
+
+
+
 @bot.command(pass_context=True)
 async def warn(ctx, userName: discord.Member, reason: str):
     if "Staff" in [role.name for role in ctx.message.author.roles] or ctx.message.author.server_permissions.administrator:
-        embed = discord.Embed(title="Warned", description="{} You have been warned for **{}***".format(userName.mention, reason))
+        embed = discord.Embed(title="Warned", description="{} You have been warned for **{}**".format(userName.mention, reason), color=0x66009D)
         embed.set_thumbnail(url=userName.avatar_url)
         embed.set_author(name=ctx.message.author.name, icon_url=ctx.message.author.avatar_url)
         await bot.say(embed=embed)
     else:
         await bot.say("{} :x: You are not allowed to use this command!".format(ctx.message.author.mention))
+@bot.command(pass_context=True)
+@commands.has_permissions(manage_messages=True)
+async def delete(ctx, number):
+    msgs = []
+    number = int(number)
+    async for x in bot.logs_from(ctx.message.channel, limit = number):
+        msgs.append(x)
+    await bot.delete_messages(msgs)
+    embed = discord.Embed(title=f"{number} messages deleted", description="Wow, somebody's been spamming", color=0x66009D)
+    test = await client.say(embed=embed)
+    await asyncio.sleep(10)
+    await client.delete_message(test)
 
 @bot.command(pass_context=True)
 async def kick(ctx, user: discord.Member):
