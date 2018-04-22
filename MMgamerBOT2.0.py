@@ -31,8 +31,15 @@ async def ping(ctx):
     print ("user has pinged")
 @bot.command(pass_context=True)
 async def ban(ctx):
-	await bot.say(":boot: Cya never again {}. CUS UR BANNED".format(user.name))
-    await bot.ban(user)
+	if ctx.message.author.server_permissions.administrator:
+		try:
+			await bot.kick(user)
+    		await bot.say(":boot: Cya never again {}! CUS UR BANNED!".format(user.name))
+    	except Exception as e:
+    		embed=discord.Embed(title="ERROR".format(user.name), description="Error: \n {}".format(str(e)), color=0x66009D)
+    		await bot.say(embed=embed)
+    else:
+    	await bot.say("You dont have perms")
 
 
 @bot.command(pass_context=True)
@@ -71,8 +78,15 @@ async def delete(ctx, number):
 
 @bot.command(pass_context=True)
 async def kick(ctx, user: discord.Member):
-    await bot.say(":boot: Cya, {}. Ya loser!".format(user.name))
-    await bot.kick(user)
+	if ctx.message.author.server_permissions.administrator:
+		try:
+			await bot.kick(user)
+    		await bot.say(":boot: Cya, {}. Ya loser!".format(user.name))
+    	except Exception as e:
+    		embed=discord.Embed(title="ERROR".format(user.name), description="Error: \n {}".format(str(e)), color=0x66009D)
+    		await bot.say(embed=embed)
+    else:
+    	await bot.say("You dont have perms")
 @bot.command(pass_context=True)
 async def embed(ctx):
     embed = discord.Embed(title="test", description="my name jeff", color=0x00ff00)
