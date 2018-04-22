@@ -26,20 +26,27 @@ async def info(ctx, user: discord.Member):
 	embed.add_field(name="Top role: ", value=user.top_role, inline=False)
 	embed.add_field(name="Joined at: ", value=user.joined_at, inline=False)
 	await bot.say(embed=embed)
-@client.command(pass_context=True)
+@bot.command(pass_context=True)
 async def warn(ctx, userName: discord.Member, reason: str):
     if "Staff" in [role.name for role in ctx.message.author.roles] or ctx.message.author.server_permissions.administrator:
         embed = discord.Embed(title="Warned", description="{} You have been warned for **{}***".format(userName.mention, reason))
         embed.set_thumbnail(url=userName.avatar_url)
         embed.set_author(name=ctx.message.author.name, icon_url=ctx.message.author.avatar_url)
-        await client.say(embed=embed)
+        await bot.say(embed=embed)
     else:
-        await client.say("{} :x: You are not allowed to use this command!".format(ctx.message.author.mention))
+        await bot.say("{} :x: You are not allowed to use this command!".format(ctx.message.author.mention))
 
 @bot.command(pass_context=True)
 async def kick(ctx, user: discord.Member):
     await bot.say(":boot: Cya, {}. Ya loser!".format(user.name))
     await bot.kick(user)
+@bot.command(pass_context=True)
+async def embed(ctx):
+    embed = discord.Embed(title="test", description="my name jeff", color=0x00ff00)
+    embed.set_footer(text="this is a footer")
+    embed.set_author(name="Will Ryan of DAGames")
+    embed.add_field(name="This is a field", value="no it isn't", inline=True)
+    await bot.say(embed=embed)
 
 @bot.event
 async def on_message(message):
