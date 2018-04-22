@@ -25,6 +25,7 @@ async def info(ctx, user: discord.Member):
 	embed.add_field(name="Status: ", value=user.id, inline=False)
 	embed.add_field(name="Top role: ", value=user.top_role, inline=False)
 	embed.add_field(name="Joined at: ", value=user.joined_at, inline=False)
+	await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
 async def kick(ctx, user: discord.Member):
