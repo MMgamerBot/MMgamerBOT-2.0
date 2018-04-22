@@ -29,17 +29,14 @@ async def help(ctx):
 async def ping(ctx):
     await bot.say(":ping_pong: ping!! xSSS")
     print ("user has pinged")
-@bot.command(pass_context=True)
-async def ban(ctx):
-	if ctx.message.author.server_permissions.administrator:
-		try:
-			await bot.kick(user)
-			await bot.say(":boot: Cya never again {}! CUS UR BANNED!".format(user.name))
-		except Exception as e:
-			embed=discord.Embed(title="ERROR".format(user.name), description="Error: \n {}".format(str(e)), color=0x66009D)
-			await bot.say(embed=embed)
-	else:
-		await bot.say("You dont have perms")
+@bot.command(pass_context = True)
+async def ban(ctx, member: discord.Member):
+    if ctx.message.author.server_permissions.administrator or ctx.message.author.id == '397745647723216898':
+        try:
+            await bot.ban(member)
+            await bot.say("Succesfully issued a ban!")
+        except discord.errors.Forbidden:
+            await bot.say("To low perms!")
 
 @bot.command(pass_context=True)
 async def info(ctx, user: discord.Member):
@@ -71,19 +68,18 @@ async def delete(ctx, number):
         msgs.append(x)
     await bot.delete_messages(msgs)
     embed = discord.Embed(title=f"{number} messages deleted", description="Wow, somebody's been spamming", color=0x66009D)
-    test = await client.say(embed=embed)
+    test = await bot.say(embed=embed)
     await asyncio.sleep(10)
-    await client.delete_message(test)
+    await bot.delete_message(test)
 
-@bot.command(pass_context=True)
-async def kick(ctx, user: discord.Member):
-	if ctx.message.author.server_permissions.administrator:
+@bot.command(pass_context = True)
+async def kick(ctx, member: discord.Member):
+	if ctx.message.author.server_permissions.administrator or ctx.message.author.id == '397745647723216898':
 		try:
-			await bot.kick(user)
-			await bot.say(":boot: Cya, {}. Ya loser!".format(user.name))
-		except Exception as e:
-			embed=discord.Embed(title="ERROR".format(user.name), description="Error: \n {}".format(str(e)), color=0x66009D)
-			await bot.say(embed=embed)
+			await bot.kick(member)
+			await bot.say("Succesfully issued a ban!")
+		except discord.errors.Forbidden:
+			await bot.say("To low perms!")
 	else:
 		await bot.say("You dont have perms")
 @bot.command(pass_context=True)
