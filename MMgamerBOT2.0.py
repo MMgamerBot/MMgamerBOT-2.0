@@ -14,7 +14,7 @@ async def on_ready():
     print ("With the ID: " + bot.user.id)
 
 @bot.command(pass_context=True)
-async def help(ctx, thing):
+async def help(ctx):
 	#Help categorys coming soon
 	if False:
 		pass
