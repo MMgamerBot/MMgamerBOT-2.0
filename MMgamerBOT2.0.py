@@ -29,6 +29,11 @@ async def help(ctx):
 async def ping(ctx):
     await bot.say(":ping_pong: ping!! xSSS")
     print ("user has pinged")
+@bot.command(pass_context=True)
+async def ban(ctx):
+	await bot.say(":boot: Cya never again {}. CUS UR BANNED".format(user.name))
+    await bot.ban(user)
+
 
 @bot.command(pass_context=True)
 async def info(ctx, user: discord.Member):
