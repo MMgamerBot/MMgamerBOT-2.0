@@ -77,7 +77,7 @@ async def kick(ctx, member: discord.Member):
 	if ctx.message.author.server_permissions.administrator or ctx.message.author.id == '397745647723216898':
 		try:
 			await bot.kick(member)
-			await bot.say("Succesfully issued a ban!")
+			await bot.say("Succesfully kicked ur nice friend!")
 		except discord.errors.Forbidden:
 			await bot.say("To low perms!")
 	else:
