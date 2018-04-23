@@ -3,6 +3,7 @@ from discord.ext import commands
 from discord.ext.commands import Bot
 import asyncio
 import os
+import random
 
 bot = commands.Bot(command_prefix='!')
 bot.remove_command('help')
@@ -89,6 +90,10 @@ async def embed(ctx):
     embed.set_author(name="Will Ryan of DAGames")
     embed.add_field(name="This is a field", value="no it isn't", inline=True)
     await bot.say(embed=embed)
+
+@bot.command(pass_context=True)
+async def ball(ctx, question):
+	await bot.say(random.choice(["NO", "Ofc", "What do u think", "Hmmm", "Yeh"]))
 
 @bot.event
 async def on_message(message):
