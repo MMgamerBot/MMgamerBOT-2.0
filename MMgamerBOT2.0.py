@@ -14,7 +14,7 @@ async def on_ready():
     print ("Ready when you are xd")
     print ("I am running on " + bot.user.name)
     print ("With the ID: " + bot.user.id)
-    await bot.change_presence(game=discord.Game(name="MMGamer.eu"))
+    await bot.change_presence(game=discord.Game(name="mmgamer.eu"))
 
 @bot.command(pass_context=True)
 async def help(ctx):
