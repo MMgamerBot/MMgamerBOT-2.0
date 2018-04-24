@@ -4,6 +4,7 @@ from discord.ext.commands import Bot
 import asyncio
 import os
 import random
+import time
 
 bot = commands.Bot(command_prefix='!')
 bot.remove_command('help')
@@ -25,12 +26,19 @@ async def help(ctx):
 		await bot.say(embed=embed)
 
 
-
-
+@bot.command(pass_context=True)
+async def ami(ctx, role):
+    if role in [role.name for role in ctx.message.author.roles]:
+        await bot.say("Yeh")
+    else:
+        await bot.say("Sadly no.")
 @bot.command(pass_context=True)
 async def ping(ctx):
-    await bot.say(":ping_pong: ping!! xSSS")
-    print ("user has pinged")
+        t1 = time.perf_counter()
+        tmp = await bot.say("pinging...")
+        t2 = time.perf_counter()
+        await bot.say("Ping: {}ms".format(round((t2-t1)*1000)))
+        await bot.delete_message(tmp)
 @bot.command(pass_context = True)
 async def ban(ctx, member: discord.Member):
     if ctx.message.author.server_permissions.administrator or ctx.message.author.id == '397745647723216898':
