@@ -102,7 +102,7 @@ async def embed(ctx):
 
 @bot.command(pass_context=True)
 async def ball(ctx, question):
-	await bot.say(random.choice(["NO", "Ofc", "Magic dosen't have all the awnsers", "No Idea, "Yes"]))
+	await bot.say(random.choice(["NO", "Ofc", "Magic dosen't have all the awnsers", "No Idea"]))
 
 @bot.event
 async def on_message(message):
