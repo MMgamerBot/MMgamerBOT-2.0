@@ -101,8 +101,8 @@ async def embed(ctx):
     await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
-async def 8ball(ctx, question):
-	await bot.say(random.choice(["NO", "Ofc", "What do u think", "Hmmm", "Yeh"]))
+async def ball(ctx, question):
+	await bot.say(random.choice(["NO", "Ofc", "Magic dosen't have all the awnsers", "No Idea, "Yes"]))
 
 @bot.event
 async def on_message(message):
