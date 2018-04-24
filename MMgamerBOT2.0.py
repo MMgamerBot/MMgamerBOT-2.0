@@ -22,16 +22,16 @@ async def help(ctx):
 	if False:
 		pass
 	else:
-		embed=discord.Embed(title="Help", description="```diff \n - !help <category/command> - helps you with stuff \n - !warn <user> <reason> - warn those spammy idiots \n - !ping - check the bot latency \n - !kick <user> - kick ennoying people \n - !embed - tests a embed \n - !delete <amount> - clear spam \n - !info <user> - gets info about a user \n```", color=0x66009D)
+		embed=discord.Embed(icon_url="http://mmgamer.syte.host/MMgamerBOT.png", title="Help", description="`!help` <category/command> - gives you this list \n - `!warn` <user> <reason> - warn those spammy idiots \n - `!ping` - check the bot latency \n - `!kick` <user> - kick annoying people \n - `!embed` - tests a embed \n - `!delete` <amount> - clear spam \n - `!info` <user> - gets info about a user \n Need more help? Join our support server: https://discord.gg/vYAfQ5E", color=0x66009D)
 		await bot.say(embed=embed)
 
 
 @bot.command(pass_context=True)
 async def ami(ctx, role):
     if role in [role.name for role in ctx.message.author.roles]:
-        await bot.say("Yeh")
+        await bot.say("Yes")
     else:
-        await bot.say("Sadly no.")
+        await bot.say("No")
 @bot.command(pass_context=True)
 async def ping(ctx):
         t1 = time.perf_counter()
@@ -44,13 +44,13 @@ async def ban(ctx, member: discord.Member):
     if ctx.message.author.server_permissions.administrator or ctx.message.author.id == '397745647723216898':
         try:
             await bot.ban(member)
-            await bot.say("Succesfully issued a ban!")
+            await bot.say(":thumbsup: Succesfully issued a ban!")
         except discord.errors.Forbidden:
-            await bot.say("To low perms!")
+            await bot.say(":x: No perms!")
 
 @bot.command(pass_context=True)
 async def info(ctx, user: discord.Member):
-	embed=discord.Embed(title="Stats for {}".format(user.name), description="Show {} stats".format(user.name), color=0x66009D)
+	embed=discord.Embed(title="Stats for {}".format(user.name), description="Show {} stat's".format(user.name), color=0x66009D)
 	embed.add_field(name="Name: ", value=user.name, inline=False)
 	embed.add_field(name="ID: ", value=user.id, inline=False)
 	embed.add_field(name="Status: ", value=user.status, inline=False)
@@ -87,9 +87,9 @@ async def kick(ctx, member: discord.Member):
 	if ctx.message.author.server_permissions.administrator or ctx.message.author.id == '397745647723216898':
 		try:
 			await bot.kick(member)
-			await bot.say("Succesfully kicked ur nice friend!")
+			await bot.say("Succesfully issued a ban!")
 		except discord.errors.Forbidden:
-			await bot.say("To low perms!")
+			await bot.say(":x: No perms!")
 	else:
 		await bot.say("You dont have perms")
 @bot.command(pass_context=True)
@@ -101,10 +101,10 @@ async def embed(ctx):
     await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
-async def ball(ctx, question):
+async def 8ball(ctx, question):
 	await bot.say(random.choice(["NO", "Ofc", "What do u think", "Hmmm", "Yeh"]))
 
 @bot.event
 async def on_message(message):
 	await bot.process_commands(message)
-bot.run("NDM3NjU3MDUzNzU5MDEyODY0.Db5UQA.PEoybWlGnQTzEPB6XfeQhrJFvlM")
+bot.run(os.getenv('TOKEN'))
