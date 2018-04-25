@@ -11,7 +11,7 @@ bot.remove_command('help')
 
 @bot.event
 async def on_ready():
-    print ("Ready when you are xd")
+    print ("Bot has Booted!")
     print ("I am running on " + bot.user.name)
     print ("With the ID: " + bot.user.id)
     await bot.change_presence(game=discord.Game(name="mmgamer.eu"))
