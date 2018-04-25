@@ -113,5 +113,5 @@ async def on_message(message):
 async def on_member_join(member: discord.Member):
     embed = discord.Embed(title="User Joined!", description="{} Has Just Joined Us! Everyone hide ur headsets".format(member.name), color=0x1eff0f)
     embed.set_thumbnail(url=member.avatar_url)
-    await bot.send_message(client.get_channel('437163805512826899'), embed)
+    await bot.send_message(bot.get_channel('437163805512826899'), embed)
 bot.run(os.getenv('TOKEN'))
