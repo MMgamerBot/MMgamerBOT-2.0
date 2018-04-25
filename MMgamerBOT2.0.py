@@ -22,8 +22,8 @@ async def help(ctx):
     if False:
         pass
     else:
-        embed=discord.Embed(title="Help - MMgamer BOT", description="-`!help` <category/command> - gives you this list \n - `!warn` <user> <reason> - warn those spammy idiots\n - `!ping` - check the bot latency \n - `!kick` <user> - kick annoying people \n - `!embed` - tests a embed \n - `!delete` <amount> - clear spam \n - `!info` <user> - gets info about a user \n Need more help? Join our support server: https://discord.gg/vYAfQ5E", color=0x66009D)
-        embed.set_thumbnail(url="https://i.imgur.com/JABkpQb.png")
+        embed=discord.Embed(title="Help", description="`!help` <category/command> - gives you this list \n - `!warn` <user> <reason> - warn those spammy idiots (surround reason in doubble quotes!) \n - `!ping` - check the bot latency \n - `!kick` <user> - kick annoying people \n - `!embed` - tests a embed \n - `!delete` <amount> - clear spam \n - `!info` <user> - gets info about a user \n Need more help? Join our support server: https://discord.gg/vYAfQ5E", color=0x66009D)
+        embed.set_thumbnail(url="http://mmgamer.syte.host/MMgamerBOT.png")
         await bot.say(embed=embed)
 
 
@@ -58,11 +58,7 @@ async def info(ctx, user: discord.Member):
     embed.add_field(name="Top role: ", value=user.top_role, inline=False)
     embed.add_field(name="Joined at: ", value=user.joined_at, inline=False)
     await bot.say(embed=embed)
-    
-@bot.command(pass_context=True)
-async def unban(ctx, userName : discord.User):
-    await client.unban(userName)
-    await client.say("{} has been unbanned. :white_check_mark:".format(userName))
+
 
 
 @bot.command(pass_context=True)
@@ -108,9 +104,14 @@ async def embed(ctx):
 
 @bot.command(pass_context=True)
 async def ball(ctx, question):
-    await bot.say(random.choice(["NO :8ball:", "Yes :8ball:", "Magic dosen't have all the awnsers :8ball:", "No Idea :8ball:"]))
+    await bot.say(random.choice(["NO", "Ofc", "Magic dosen't have all the awnsers", "No Idea"]))
 
 @bot.event
 async def on_message(message):
     await bot.process_commands(message)
+@bot.event
+async def on_member_join(member: discord.Member):
+    embed = discord.Embed(title="User Joined!", description="{} Has Just Joined Us! Everyone hide ur headsets".format(member.name), color=0x1eff0f)
+    embed.set_thumbnail(url=member.avatar_url)
+    await bot.send_message(client.get_channel('428174582814343188'), embed)
 bot.run(os.getenv('TOKEN'))
