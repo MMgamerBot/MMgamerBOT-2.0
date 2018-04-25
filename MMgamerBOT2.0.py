@@ -37,6 +37,12 @@ async def dog(ctx):
     embed=discord.Embed(title="A dog as requested:", color=0x66009D)
     embed.set_image(url="https://media.giphy.com/media/Bc3SkXz1M9mjS/giphy.gif")
     await bot.say(embed=embed)
+ 
+@bot.command(pass_context=True)
+async def github(ctx)
+    embed=discord.Embed(title="GitHub Repo",description=>"Our Dank ass github repo: https://github.com/MMgamerBot/MMgamerBOT-2.0", color=0x66009D)
+    embed.set_author(icon_url="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png")
+    await bot.say(embed=embed)
 
     
 @bot.command(pass_context=True)
