@@ -18,17 +18,17 @@ async def on_ready():
 
 @bot.command(pass_context=True)
 async def help(ctx):
-	#Help categorys coming soon
-	if False:
-		pass
-	else:
-		embed=discord.Embed(title="Help", description="`!help` <category/command> - gives you this list \n - `!warn` <user> <reason> - warn those spammy idiots \n - `!ping` - check the bot latency \n - `!kick` <user> - kick annoying people \n - `!embed` - tests a embed \n - `!delete` <amount> - clear spam \n - `!info` <user> - gets info about a user \n Need more help? Join our support server: https://discord.gg/vYAfQ5E", color=0x66009D)
-		embed.set_thumbnail(url="http://mmgamer.syte.host/MMgamerBOT.png")
-		await bot.say(embed=embed)
+    #Help categorys coming soon
+    if False:
+        pass
+    else:
+        embed=discord.Embed(title="Help", description="`!help` <category/command> - gives you this list \n - `!warn` <user> <reason> - warn those spammy idiots \n - `!ping` - check the bot latency \n - `!kick` <user> - kick annoying people \n - `!embed` - tests a embed \n - `!delete` <amount> - clear spam \n - `!info` <user> - gets info about a user \n Need more help? Join our support server: https://discord.gg/vYAfQ5E", color=0x66009D)
+        embed.set_thumbnail(url="http://mmgamer.syte.host/MMgamerBOT.png")
+        await bot.say(embed=embed)
 
 
 @bot.command(pass_context=True)
-async def ami(ctx, role):
+async def ami(ctx,*, role):
     if role in [role.name for role in ctx.message.author.roles]:
         await bot.say("Yes")
     else:
@@ -51,18 +51,18 @@ async def ban(ctx, member: discord.Member):
 
 @bot.command(pass_context=True)
 async def info(ctx, user: discord.Member):
-	embed=discord.Embed(title="Stats for {}".format(user.name), description="Show {} stat's".format(user.name), color=0x66009D)
-	embed.add_field(name="Name: ", value=user.name, inline=False)
-	embed.add_field(name="ID: ", value=user.id, inline=False)
-	embed.add_field(name="Status: ", value=user.status, inline=False)
-	embed.add_field(name="Top role: ", value=user.top_role, inline=False)
-	embed.add_field(name="Joined at: ", value=user.joined_at, inline=False)
-	await bot.say(embed=embed)
+    embed=discord.Embed(title="Stats for {}".format(user.name), description="Show {} stat's".format(user.name), color=0x66009D)
+    embed.add_field(name="Name: ", value=user.name, inline=False)
+    embed.add_field(name="ID: ", value=user.id, inline=False)
+    embed.add_field(name="Status: ", value=user.status, inline=False)
+    embed.add_field(name="Top role: ", value=user.top_role, inline=False)
+    embed.add_field(name="Joined at: ", value=user.joined_at, inline=False)
+    await bot.say(embed=embed)
 
 
 
 @bot.command(pass_context=True)
-async def warn(ctx, userName: discord.Member, reason: str):
+async def warn(ctx, userName: discord.Member, *, reason: str):
     if "Staff" in [role.name for role in ctx.message.author.roles] or ctx.message.author.server_permissions.administrator:
         embed = discord.Embed(title="Warned", description="{} You have been warned for **{}**".format(userName.mention, reason), color=0x66009D)
         embed.set_thumbnail(url=userName.avatar_url)
@@ -85,14 +85,14 @@ async def delete(ctx, number):
 
 @bot.command(pass_context = True)
 async def kick(ctx, member: discord.Member):
-	if ctx.message.author.server_permissions.administrator or ctx.message.author.id == '397745647723216898':
-		try:
-			await bot.kick(member)
-			await bot.say("Succesfully issued a ban!")
-		except discord.errors.Forbidden:
-			await bot.say(":x: No perms!")
-	else:
-		await bot.say("You dont have perms")
+    if ctx.message.author.server_permissions.administrator or ctx.message.author.id == '397745647723216898':
+        try:
+            await bot.kick(member)
+            await bot.say("Succesfully issued a ban!")
+        except discord.errors.Forbidden:
+            await bot.say(":x: No perms!")
+    else:
+        await bot.say("You dont have perms")
 @bot.command(pass_context=True)
 async def embed(ctx):
     embed = discord.Embed(title="test", description="my name jeff", color=0x00ff00)
@@ -103,9 +103,9 @@ async def embed(ctx):
 
 @bot.command(pass_context=True)
 async def ball(ctx, question):
-	await bot.say(random.choice(["NO", "Ofc", "Magic dosen't have all the awnsers", "No Idea"]))
+    await bot.say(random.choice(["NO", "Ofc", "Magic dosen't have all the awnsers", "No Idea"]))
 
 @bot.event
 async def on_message(message):
-	await bot.process_commands(message)
+    await bot.process_commands(message)
 bot.run(os.getenv('TOKEN'))
