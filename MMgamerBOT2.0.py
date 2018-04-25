@@ -41,7 +41,7 @@ async def dog(ctx):
     await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
-async def urban(ctx):
+async def urban(ctx, *, message):
         r = requests.get("http://api.urbandictionary.com/v0/define?term={}".format(' '.join(message)))
         r = json.loads(r.text)
         try:
