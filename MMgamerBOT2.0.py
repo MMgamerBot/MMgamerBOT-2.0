@@ -62,12 +62,13 @@ async def info(ctx, user: discord.Member):
 
 
 @bot.command(pass_context=True)
-async def warn(ctx, userName: discord.Member, *reason: str):
+async def warn(ctx, userName: discord.Member, reason: str):
     if "Staff" in [role.name for role in ctx.message.author.roles] or ctx.message.author.server_permissions.administrator:
         embed = discord.Embed(title="Warned", description="{} You have been warned for **{}**".format(userName.mention, reason), color=0x66009D)
         embed.set_thumbnail(url=userName.avatar_url)
         embed.set_author(name=ctx.message.author.name, icon_url=ctx.message.author.avatar_url)
         await bot.say(embed=embed)
+        await bot.send_message(userName, "You Have Been Warned. Reason: {}".format(reason))
     else:
         await bot.say("{} :x: You are not allowed to use this command!".format(ctx.message.author.mention))
 @bot.command(pass_context=True)
