@@ -31,6 +31,12 @@ async def cat(ctx):
     embed=discord.Embed(title="Cat", color=0x66009D)
     embed.set_image(url="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif")
     await bot.say(embed=embed)
+    
+@bot.command(pass_context=True)
+async def dog(ctx):
+    embed=discord.Embed(title="A dog as requested:", color=0x66009D)
+    embed.set_image(url="https://media.giphy.com/media/Bc3SkXz1M9mjS/giphy.gif")
+    await bot.say(embed=embed)
 
     
 @bot.command(pass_context=True)
