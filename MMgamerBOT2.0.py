@@ -37,6 +37,22 @@ async def dog(ctx):
     embed=discord.Embed(title="A dog as requested:", color=0x66009D)
     embed.set_image(url="https://media.giphy.com/media/Bc3SkXz1M9mjS/giphy.gif")
     await bot.say(embed=embed)
+
+@bot.command(pass_context=True)
+async def urban(self, ctx, *message):
+        r = requests.get("http://api.urbandictionary.com/v0/define?term={}".format(' '.join(message)))
+        r = json.loads(r.text)
+        try:
+            embed = discord.Embed(title="**Definition for {}**".format(r['list'][0]['word']), description=r['list'][0]['definition'], url=r['list'][0]['permalink'])
+        except IndexError:
+            await ctx.channel.send('Definition not found for "{}"'.format(' '.join(message)))
+        else:
+            embed.set_thumbnail(url="http://i.imgur.com/FoxWu8z.jpg")
+            embed.add_field(name="Example", value=r['list'][0]['example'], inline=False)
+            embed.add_field(name="Author", value=r['list'][0]['author'], inline=True)
+            embed.add_field(name="Rating", value=":thumbsup: `{}` :thumbsdown: `{}`".format(r['list'][0]['thumbs_up'], r['list'][0]['thumbs_down']), inline=True)
+            embed.add_field(name="Tags", value=' '.join(r['tags']), inline=False)
+            await ctx.channel.send(embed=embed)
  
 @bot.command(pass_context=True)
 async def github(ctx)
