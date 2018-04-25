@@ -54,7 +54,7 @@ async def urban(ctx, *, message):
             embed.add_field(name="Author", value=r['list'][0]['author'], inline=True)
             embed.add_field(name="Rating", value=":thumbsup: `{}` :thumbsdown: `{}`".format(r['list'][0]['thumbs_up'], r['list'][0]['thumbs_down']), inline=True)
             embed.add_field(name="Tags", value=' '.join(r['tags']), inline=False)
-            await ctx.channel.send(embed=embed)
+            await bot.say(embed=embed)
  
 @bot.command(pass_context=True)
 async def github(ctx)
