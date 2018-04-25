@@ -5,6 +5,8 @@ import asyncio
 import os
 import random
 import time
+import josn
+import requests
 
 bot = commands.Bot(command_prefix='!')
 bot.remove_command('help')
@@ -39,7 +41,7 @@ async def dog(ctx):
     await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
-async def urban(self, ctx, *message):
+async def urban(ctx):
         r = requests.get("http://api.urbandictionary.com/v0/define?term={}".format(' '.join(message)))
         r = json.loads(r.text)
         try:
