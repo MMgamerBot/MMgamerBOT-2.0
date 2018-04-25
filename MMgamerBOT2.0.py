@@ -28,7 +28,7 @@ async def help(ctx):
 
 @bot.command(pass_context=True)
 async def cat(ctx):
-    embed=discord.Embed(title=Cat, color=0x66009D)
+    embed=discord.Embed(title="Cat", color=0x66009D)
     embed.set_image(url="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif")
     await bot.say(embed=embed)
 
