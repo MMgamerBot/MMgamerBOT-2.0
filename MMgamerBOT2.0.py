@@ -26,7 +26,13 @@ async def help(ctx):
         embed.set_thumbnail(url="http://mmgamer.syte.host/MMgamerBOT.png")
         await bot.say(embed=embed)
 
+@bot.command(pass_context=True)
+async def cat(ctx):
+    embed=discord.Embed(title=Cat, color=0x66009D)
+    embed.set_image(url="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif")
+    await bot.say(embed=embed)
 
+    
 @bot.command(pass_context=True)
 async def ami(ctx,*, role):
     if role in [role.name for role in ctx.message.author.roles]:
