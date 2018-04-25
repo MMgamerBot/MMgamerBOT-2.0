@@ -5,7 +5,7 @@ import asyncio
 import os
 import random
 import time
-import josn
+import json
 import requests
 
 bot = commands.Bot(command_prefix='!')
