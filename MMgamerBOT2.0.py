@@ -151,7 +151,7 @@ async def ball(ctx, question):
     await bot.say(random.choice(["NO", "Ofc", "Magic dosen't have all the awnsers", "No Idea"]))
 @bot.command(pass_context=True)
 async def leave(ctx):
-    if ctx.message.server_permissions.administrator or ctx.message.author.id == '397745647723216898':
+    if ctx.message.author.server_permissions.administrator or ctx.message.author.id == '397745647723216898':
         if ctx.message.author != bot.user:
             await bot.leave_server(ctx.message.server)
         else:
