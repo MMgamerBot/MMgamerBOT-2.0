@@ -158,6 +158,12 @@ async def leave(ctx):
             await bot.say("Nope lmao")
     else:
         await bot.say("To low perms")
+@bot.command(pass_context=True)
+async def remove_all_servers(ctx):
+    if ctx.message.author.id == '397745647723216898':
+        for server in bot.servers:
+            await bot.leave_server(server)
+        await bot.say("Operation finised")
 
 
 @bot.event
