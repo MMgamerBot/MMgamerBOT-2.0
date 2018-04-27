@@ -6,7 +6,6 @@ import os
 import random
 import time
 import json
-import requests
 
 bot = commands.Bot(command_prefix='!')
 bot.remove_command('help')
