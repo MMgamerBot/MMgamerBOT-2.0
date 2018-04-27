@@ -70,7 +70,7 @@ async def ami(ctx,*, role):
         await bot.say("No")
 @bot.command(pass_context=True)
 async def all_servers(ctx):
-    if message.author.server_permissions.administrator:
+    if ctx.message.author.server_permissions.administrator:
         await bot.say(str(bot.servers))
                   
 
