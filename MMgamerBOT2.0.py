@@ -71,7 +71,10 @@ async def ami(ctx,*, role):
 @bot.command(pass_context=True)
 async def all_servers(ctx):
     if ctx.message.author.server_permissions.administrator:
-        await bot.say(str(bot.servers.name))
+        tmp = ""
+        for i in bot.servers:
+            tmp += " " + i.name
+        await bot.say(tmp)
                   
 
 @bot.command(pass_context=True)
