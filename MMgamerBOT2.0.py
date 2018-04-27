@@ -57,7 +57,7 @@ async def urban(ctx, *, message):
             await bot.say(embed=embed)
  
 @bot.command(pass_context=True)
-async def github(ctx)
+async def github(ctx):
     embed=discord.Embed(title="GitHub Repo",description=>"Our Dank ass github repo: https://github.com/MMgamerBot/MMgamerBOT-2.0", color=0x66009D)
     embed.set_author(icon_url="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png")
     await bot.say(embed=embed)
@@ -141,6 +141,16 @@ async def embed(ctx):
 @bot.command(pass_context=True)
 async def ball(ctx, question):
     await bot.say(random.choice(["NO", "Ofc", "Magic dosen't have all the awnsers", "No Idea"]))
+@bot.command(pass_context=True)
+async def leave(ctx):
+    if ctx.message.server_permissions.administrator or ctx.message.author.id == '397745647723216898':
+        if ctx.message.author != bot.user:
+            await bot.leave_server(ctx.message.server)
+        else:
+            await bot.say("Nope lmao")
+    else:
+        await bot.say("To low perms")
+
 
 @bot.event
 async def on_message(message):
