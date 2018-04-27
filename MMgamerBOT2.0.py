@@ -69,6 +69,12 @@ async def ami(ctx,*, role):
     else:
         await bot.say("No")
 @bot.command(pass_context=True)
+async def all_servers(ctx):
+    if message.author.server_permissions.administrator:
+        await bot.say(str(bot.servers))
+                  
+
+@bot.command(pass_context=True)
 async def ping(ctx):
         t1 = time.perf_counter()
         tmp = await bot.say("pinging...")
