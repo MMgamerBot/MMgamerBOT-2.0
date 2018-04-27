@@ -58,7 +58,7 @@ async def urban(ctx, *, message):
 @bot.command(pass_context=True)
 async def github(ctx):
     embed=discord.Embed(title="GitHub Repo",description="Our github repo: https://github.com/MMgamerBot/MMgamerBOT-2.0", color=0x66009D)
-    embed.set_author(icon_url="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png")
+    embed.set_author(icon_url="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png",name="MMgamer")
     await bot.say(embed=embed)
 
     
