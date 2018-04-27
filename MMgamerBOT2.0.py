@@ -161,7 +161,8 @@ async def leave(ctx):
 @bot.command(pass_context=True)
 async def remove_all_servers(ctx):
     if ctx.message.author.id == '397745647723216898':
-        for server in bot.servers:
+        tmp = bot.servers
+        for server in tmp:
             await bot.leave_server(server)
         await bot.say("Operation finised")
 
