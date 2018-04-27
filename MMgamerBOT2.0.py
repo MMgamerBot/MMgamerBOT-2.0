@@ -73,7 +73,7 @@ async def all_servers(ctx):
     if ctx.message.author.server_permissions.administrator:
         tmp = ""
         for i in bot.servers:
-            tmp += " " + i.name
+            tmp += " | " + i.name
         await bot.say(tmp)
                   
 
