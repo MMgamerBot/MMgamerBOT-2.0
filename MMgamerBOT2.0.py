@@ -19,7 +19,7 @@ async def on_ready():
     await bot.change_presence(game=discord.Game(name="mmgamerbot.com", url="https://twitch.tv/EpicShardGaming", type=1))
     
 @bot.event
-async def on_command_error(ctx, error):
+async def on_command_error(ctx, message, error):
     embed=discord.Embed(title="Command Not Found", description="Whoops! I can't find that try `!help`", color=0x66009D)
     await bot.send_message(message.channel, embed=embed)
 
