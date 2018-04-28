@@ -16,7 +16,7 @@ async def on_ready():
     print ("Bot has Booted!")
     print ("I am running on " + bot.user.name)
     print ("With the ID: " + bot.user.id)
-    await bot.change_presence(game=discord.Game(name="mmgamerbot.com"))
+    await bot.change_presence(game=discord.Game(name="mmgamer.eu", url="https://twitch.tv/EpicShardGaming", type=1))
 
 @bot.command(pass_context=True)
 async def help(ctx):
@@ -27,6 +27,7 @@ async def help(ctx):
         embed=discord.Embed(title="Help", description="`!help` <category/command> - gives you this list \n - `!warn` <user> <reason> - warn those spammy idiots (surround reason in doubble quotes!) \n - `!ping` - check the bot latency \n - `!kick` <user> - kick annoying people \n - `!embed` - tests a embed \n - `!delete` <amount> - clear spam \n - `!info` <user> - gets info about a user \n Need more help? Join our support server: https://discord.gg/vYAfQ5E", color=0x66009D)
         embed.set_thumbnail(url="https://i.imgur.com/JABkpQb.png")
         await bot.say(embed=embed)
+
 
 @bot.command(pass_context=True)
 async def cat(ctx):
@@ -44,6 +45,9 @@ async def dog(ctx):
 async def urban(ctx, *, message):
         r = requests.get("http://api.urbandictionary.com/v0/define?term={}".format(' '.join(message)))
         r = json.loads(r.text)
+        file = open('urban.txt', 'w')
+        file.write("**Definition for {}** \n\n\n {}{}".format(r['list'][0]['word'],r['list'][0]['definition'],r['list'][0]['permalink']))
+        await client.send_file(ctx.message.channel, 'urban.txt')
         try:
             embed = discord.Embed(title="**Definition for {}**".format(r['list'][0]['word']), description=r['list'][0]['definition'], url=r['list'][0]['permalink'])
         except IndexError:
