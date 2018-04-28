@@ -21,7 +21,7 @@ async def on_ready():
 @bot.event
 async def on_command_error(ctx, message, error):
     embed=discord.Embed(title="Command Not Found", description="Whoops! I can't find that try `!help`", color=0x66009D)
-    await bot.send_message(message.channel, embed=embed)
+    await bot.send_message(ctx.message.channel, embed=embed)
 
 @bot.command(pass_context=True)
 async def help(ctx):
