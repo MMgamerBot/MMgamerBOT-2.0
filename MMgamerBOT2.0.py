@@ -76,7 +76,7 @@ async def all_servers(ctx):
         for i in bot.servers:
             embed.add_field(name=str(tmp), value=i.name, inline=True)
             tmp += 1
-        await bot.say(tmp)
+        await bot.say(embed=embed)
                   
 
 @bot.command(pass_context=True)
