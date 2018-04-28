@@ -47,18 +47,7 @@ async def urban(ctx, *, message):
         r = json.loads(r.text)
         file = open('urban.txt', 'w')
         file.write("**Definition for {}** \n\n\n {}{}".format(r['list'][0]['word'],r['list'][0]['definition'],r['list'][0]['permalink']))
-        await client.send_file(ctx.message.channel, 'urban.txt')
-        try:
-            embed = discord.Embed(title="**Definition for {}**".format(r['list'][0]['word']), description=r['list'][0]['definition'], url=r['list'][0]['permalink'])
-        except IndexError:
-            await ctx.channel.send('Definition not found for "{}"'.format(' '.join(message)))
-        else:
-            embed.set_thumbnail(url="http://i.imgur.com/FoxWu8z.jpg")
-            embed.add_field(name="Example", value=r['list'][0]['example'], inline=False)
-            embed.add_field(name="Author", value=r['list'][0]['author'], inline=True)
-            embed.add_field(name="Rating", value=":thumbsup: `{}` :thumbsdown: `{}`".format(r['list'][0]['thumbs_up'], r['list'][0]['thumbs_down']), inline=True)
-            embed.add_field(name="Tags", value=' '.join(r['tags']), inline=False)
-            await bot.say(embed=embed)
+        await bot.send_file(ctx.message.channel, 'urban.txt')
  
 @bot.command(pass_context=True)
 async def github(ctx):
