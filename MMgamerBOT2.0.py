@@ -48,7 +48,7 @@ async def urban(ctx, *, message):
         file = open('urban.txt', 'w')
         file.write("**Definition for {}** \n\n\n {}{}".format(r['list'][0]['word'],r['list'][0]['definition'],r['list'][0]['permalink']))
         tmp = open('urban.txt', 'rb')
-        await bot.send_file(ctx.message.channel, 'urban.txt', tmp)
+        await bot.send_file(ctx.message.channel, 'urban.txt', content=tmp)
  
 @bot.command(pass_context=True)
 async def github(ctx):
