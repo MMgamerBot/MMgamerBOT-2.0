@@ -47,6 +47,7 @@ async def urban(ctx, *, message):
         r = json.loads(r.text)
         file = open('urban.txt', 'w')
         file.write("**Definition for {}** \n\n\n {}{}".format(r['list'][0]['word'],r['list'][0]['definition'],r['list'][0]['permalink']))
+        file.close()
         tmp = open('urban.txt', 'rb')
         await bot.send_file(ctx.message.channel, 'urban.txt', content=tmp)
  
