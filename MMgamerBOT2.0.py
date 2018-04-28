@@ -21,7 +21,7 @@ async def on_ready():
 @bot.event
 async def on_command_error(ctx, error):
     embed=discord.Embed(title="Command Not Found", description="Whoops! I can't find that try `!help`", color=0x66009D)
-    await bot.say(embed=embed)
+    await bot.send_message(message.channel, embed=embed)
 
 @bot.command(pass_context=True)
 async def help(ctx):
@@ -72,7 +72,7 @@ async def ami(ctx,*, role):
 @bot.command(pass_context=True)
 async def all_servers(ctx):
     if ctx.message.author.server_permissions.administrator:
-        embed = discord.Embed(title="All servers", description="lists all servers the bot is in.", color=0x00ff00)
+        embed = discord.Embed(title="All servers", description="lists all servers the bot is in.", color=0x66009D)
         tmp = 1
         for i in bot.servers:
             embed.add_field(name=str(tmp), value=i.name, inline=False)
@@ -143,7 +143,7 @@ async def kick(ctx, member: discord.Member):
         await bot.say("You dont have perms")
 @bot.command(pass_context=True)
 async def embed(ctx):
-    embed = discord.Embed(title="test", description="my name jeff", color=0x00ff00)
+    embed = discord.Embed(title="test", description="my name jeff", color=0x66009D)
     embed.set_footer(text="this is a footer")
     embed.set_author(name="Will Ryan of DAGames")
     embed.add_field(name="This is a field", value="no it isn't", inline=True)
@@ -175,7 +175,7 @@ async def on_message(message):
     await bot.process_commands(message)
 @bot.event
 async def on_member_join(member: discord.Member):
-    embed = discord.Embed(title="User Joined!", description="{} Has Just Joined Us! Everyone hide ur headsets".format(member.name), color=0x1eff0f)
+    embed = discord.Embed(title="User Joined!", description="{} Has Just Joined Us! Everyone hide ur headsets".format(member.name), color=0x66009D)
     embed.set_thumbnail(url=member.avatar_url)
     await bot.send_message(bot.get_channel('437163805512826899'), embed=embed)
 bot.run(os.getenv('TOKEN'))
