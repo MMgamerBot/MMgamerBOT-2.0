@@ -71,9 +71,11 @@ async def ami(ctx,*, role):
 @bot.command(pass_context=True)
 async def all_servers(ctx):
     if ctx.message.author.server_permissions.administrator:
-        tmp = ""
+        embed = discord.Embed(title="All servers", description="lists all servers the bot is in.", color=0x00ff00)
+        tmp = 1
         for i in bot.servers:
-            tmp += " | " + i.name
+            embed.add_field(name=str(tmp), value=i.name, inline=True)
+            tmp += 1
         await bot.say(tmp)
                   
 
