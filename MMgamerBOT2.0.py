@@ -17,6 +17,10 @@ async def on_ready():
     print ("I am running on " + bot.user.name)
     print ("With the ID: " + bot.user.id)
     await bot.change_presence(game=discord.Game(name="mmgamerbot.com", url="https://twitch.tv/EpicShardGaming", type=1))
+    
+@client.event
+async def on_command_error(ctx, error):
+    await bot.say("Command not found! :x:")
 
 @bot.command(pass_context=True)
 async def help(ctx):
