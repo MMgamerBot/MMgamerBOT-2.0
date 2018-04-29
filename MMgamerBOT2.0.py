@@ -11,7 +11,6 @@ import requests
 bot = commands.Bot(command_prefix='!')
 bot.remove_command('help')
 async def loop():
-    await bot.wait_until_ready()
     while not client.is_closed:
         await bot.change_presence(game=discord.Game(name="!help", url="https://twitch.tv/EpicShardGaming", type=1))
         asyncio.sleep(600)
