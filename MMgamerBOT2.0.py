@@ -11,12 +11,11 @@ import requests
 bot = commands.Bot(command_prefix='!')
 bot.remove_command('help')
 async def loop():
-    while not client.is_closed:
-        await bot.change_presence(game=discord.Game(name="!help", url="https://twitch.tv/EpicShardGaming", type=1))
-        asyncio.sleep(600)
-        await bot.change_presence(game=discord.Game(name="mmgamerbot.com", url="https://twitch.tv/EpicShardGaming", type=1))
-        asyncio.sleep(600)
-        await bot.change_presence(game=discord.Game(name="prefix: !", url="https://twitch.tv/EpicShardGaming", type=1))
+    await bot.change_presence(game=discord.Game(name="!help", url="https://twitch.tv/EpicShardGaming", type=1))
+    asyncio.sleep(10)
+    await bot.change_presence(game=discord.Game(name="mmgamerbot.com", url="https://twitch.tv/EpicShardGaming", type=1))
+    asyncio.sleep(10)
+    await bot.change_presence(game=discord.Game(name="prefix: !", url="https://twitch.tv/EpicShardGaming", type=1))
 
 @bot.event
 async def on_ready():
