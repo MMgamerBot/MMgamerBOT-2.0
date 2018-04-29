@@ -13,11 +13,11 @@ bot.remove_command('help')
 async def loop():
     while True:
         await bot.change_presence(game=discord.Game(name="!help", url="https://twitch.tv/EpicShardGaming", type=1))
-        asyncio.sleep(15)
+        await asyncio.sleep(15)
         await bot.change_presence(game=discord.Game(name="mmgamerbot.com", url="https://twitch.tv/EpicShardGaming", type=1))
-        asyncio.sleep(15)
+        await asyncio.sleep(15)
         await bot.change_presence(game=discord.Game(name="prefix: !", url="https://twitch.tv/EpicShardGaming", type=1))
-        asyncio.sleep(15)
+        await asyncio.sleep(15)
 
 @bot.event
 async def on_ready():
