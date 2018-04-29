@@ -23,7 +23,10 @@ async def on_ready():
     print ("I am running on " + bot.user.name)
     print ("With the ID: " + bot.user.id)
     await bot.change_presence(game=discord.Game(name="mmgamerbot.com", url="https://twitch.tv/EpicShardGaming", type=1))
-    bot.loop.create_task(list_servers())
+    loopTask = asyncio.new_event_loop()
+    asyncio.set_event_loop(loopTask)
+    asyncio.ensure_future(loop())
+    loopTask.run_forever()
     
 @bot.event
 async def on_command_error(message, error):
@@ -191,4 +194,8 @@ async def on_member_join(member: discord.Member):
     embed = discord.Embed(title="User Joined!", description="{} Has Just Joined Us! Everyone hide ur headsets".format(member.name), color=0x66009D)
     embed.set_thumbnail(url=member.avatar_url)
     await bot.send_message(bot.get_channel('437163805512826899'), embed=embed)
+
+
+
+
 bot.run(os.getenv('TOKEN'))
