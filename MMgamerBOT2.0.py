@@ -28,9 +28,17 @@ async def on_ready():
     await loop()
     
 @bot.event
-async def on_command_error(message, error):
-    embed=discord.Embed(title="Command Not Found", description="Whoops! I can't find that try `!help`", color=0x66009D)
-    await bot.send_message(message.channel, embed=embed)
+async def on_command_error(ctx, error):
+    if isinstance(error, discord.ext.commands.errors.CommandNotFound):
+        embed = discord.Embed(title="Error:",
+                              description="Command not found, Try **!help**.",
+                              colour=0xe73c24)
+        await bot.say(embed=embed)
+    else:
+        embed = discord.Embed(title="Error:",
+                              description=f"{error}",
+                              colour=0xe73c24)
+        await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
 async def help(ctx):
