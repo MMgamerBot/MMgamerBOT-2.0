@@ -46,12 +46,11 @@ async def create_role(ctx, *, name):
     
 @bot.event
 async def on_command_error(ctx, error):
-    print(dir(ctx), dir(error))
     if isinstance(error, discord.ext.commands.errors.CommandNotFound):
         embed = discord.Embed(title="Error:",
                               description="Command not found, Try **!help**.",
                               colour=0xe73c24)
-        await bot.send_message(ctx,embed=error.message.channel)
+        await bot.send_message(ctx, embed=error.message.channel)
     else:
         embed = discord.Embed(title="Error:",
                               description=f"{error}",
