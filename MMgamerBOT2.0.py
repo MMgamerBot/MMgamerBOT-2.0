@@ -50,10 +50,10 @@ async def on_command_error(ctx, error):
         embed = discord.Embed(title="Error:",
                               description="Command not found, Try **!help**.",
                               colour=0xe73c24)
-        await bot.send_message(ctx, embed=error.message.channel)
+        await bot.send_message(error.message.channel, embed=embed)
     else:
         embed = discord.Embed(title="Error:",
-                              description=f"{error}",
+                              description=f"{ctx}",
                               colour=0xe73c24)
         await bot.send_message(error.message.channel, embed=embed)
 
