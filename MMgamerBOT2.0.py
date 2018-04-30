@@ -46,6 +46,7 @@ async def create_role(ctx, *, name):
     
 @bot.event
 async def on_command_error(ctx, error):
+    return print(dir(ctx), dir(error))
     if isinstance(error, discord.ext.commands.errors.CommandNotFound):
         embed = discord.Embed(title="Error:",
                               description="Command not found, Try **!help**.",
