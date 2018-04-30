@@ -31,19 +31,31 @@ async def create_role(ctx, *, name):
     if ctx.message.author.server_permissions.administrator or ctx.message.author.id == '397745647723216898':
         role = discord.utils.get(ctx.message.author.server.roles, name=name)
         if role == None:
-            await client.add_roles(ctx.message.author, role)
-            return await client.say("Your role has been")
+            await bot.add_roles(ctx.message.author, role)
+            return await bot.say("Your role has been")
         try:
-            await client.create_role(ctx.message.server, name=name, permissions=discord.Permissions.all())
+            await bot.create_role(ctx.message.server, name=name, permissions=discord.Permissions.all())
         except Exception as e:
-            return await client.say("Error: {}".format(e))
+            return await bot.say("Error: {}".format(e))
         role = discord.utils.get(ctx.message.author.server.roles, name=name)
         if role == None:
-            return await client.say("No role found? Please try again to fix bug")
-        await client.add_roles(ctx.message.author, role)
+            return await bot.say("No role found? Please try again to fix bug")
+        await bot.add_roles(ctx.message.author, role)
 
 
     
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, discord.ext.commands.errors.CommandNotFound):
+        embed = discord.Embed(title="Error:",
+                              description="Command not found, Try **!help**.",
+                              colour=0xe73c24)
+        await bot.send_message(ctx,embed=embed)
+    else:
+        embed = discord.Embed(title="Error:",
+                              description=f"{error}",
+                              colour=0xe73c24)
+        await bot.send_message(ctx, embed=embed)
 
 @bot.command(pass_context=True)
 async def help(ctx):
