@@ -45,6 +45,8 @@ async def create_role(ctx, *, name):
 @bot.command(pass_context=True)
 async def ftn(ctx, platform ,*, player):
     r = requests.get('https://api.fortnitetracker.com/v1/profile/{}/{}'.format(platform, player))
+    file = open('Stats.txt', 'w')
+    file.write(r.text)
     await bot.send_file(ctx.message.channel, 'Stats.txt', content=r.text)
 
     
