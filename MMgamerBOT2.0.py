@@ -21,9 +21,9 @@ async def loop():
 
 @bot.event
 async def on_ready():
-    print ("Bot has Booted!")
-    print ("I am running on " + bot.user.name)
-    print ("With the ID: " + bot.user.id)
+    print ("IS THIS THING ON?")
+    print ("Yea I am on " + bot.user.name)
+    print ("Hey Idiot my ID is: " + bot.user.id)
     await bot.change_presence(game=discord.Game(name="mmgamerbot.com", url="https://twitch.tv/EpicShardGaming", type=1))
     await loop()
 @bot.command(pass_context=True)
