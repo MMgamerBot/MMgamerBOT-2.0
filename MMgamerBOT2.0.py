@@ -51,14 +51,16 @@ async def ftn(ctx, platform ,*, player):
     embed = discord.Embed(title="Stats for {}".format(player), description="Stats found: ", colour=0xe73c24)
     stats = stats["stats"]
     p2 = stats["p2"]
-    KD = p2["kd"]
-    KDvalue = KD["value"]
+    KDDuo = duo["kd"]
+    KDDuovalue = KDDuo["value"]
+    TRNDuoRanking = p2["trnranking"]
     embed.add_field(name="General information", value='\u200b', inline=False)
     embed.add_field(name="ID", value=all_stats["accountId"], inline=True)
     embed.add_field(name="Duo stats", value='\u200b', inline=False)
-    embed.add_field(name="K/D", value=KDvalue, inline=True)
-    score = p2["score"]
-    embed.add_field(name="Score", value=score["value"], inline=True)
+    embed.add_field(name="K/D", value=KDDuovalue, inline=True)
+    embed.add_field(name="TRN Rating", value=TRNDuoRanking["value"], inline=True)
+    duoscore = p2["score"]
+    embed.add_field(name="Score", value=duoscore["value"], inline=True)
     await bot.say(embed=embed)
 
     
