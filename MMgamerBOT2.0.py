@@ -42,9 +42,12 @@ async def create_role(ctx, *, name):
             return await bot.say("No role found? Please try again to fix bug")
         await bot.add_roles(ctx.message.author, role)
 
+@bot.command(pass_context=True)
+async def ftn(ctx, platform ,*, player):
+    r = requests.get('GET https://api.fortnitetracker.com/v1/profile/{}/{}'.format(platform, player))
 
     
-#@bot.event
+@bot.event
 async def on_command_error(ctx, error):
     if isinstance(ctx, discord.ext.commands.errors.CommandNotFound):
         embed = discord.Embed(title="Error:",
