@@ -49,7 +49,7 @@ async def on_command_error(ctx, error):
     if isinstance(ctx, discord.ext.commands.errors.CommandNotFound):
         embed = discord.Embed(title="Error:",
                               description="Command not found, Try **!help**.",
-                              colour=0xe73c24)
+                              colour=0x66009D)
         await bot.send_message(error.message.channel, embed=embed)
     else:
         embed = discord.Embed(title="Error:",
