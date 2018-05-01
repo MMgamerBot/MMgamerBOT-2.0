@@ -47,14 +47,13 @@ async def ftn(ctx, platform ,*, player):
     headers = {'TRN-Api-Key': '5d24cc04-926b-4922-b864-8fd68acf482e'}
     r = requests.get('https://api.fortnitetracker.com/v1/profile/{}/{}'.format(platform, player), headers=headers)
     stats = json.loads(r.text)
-    all_stats = stats
     embed = discord.Embed(title="Stats for {}".format(player), description="Stats found: ", colour=0xe73c24)
     stats = stats["stats"]
     p2 = stats["p2"]
     KD = p2["kd"]
     KDvalue = KD["value"]
     embed.add_field(name="General information", value='\u200b', inline=False)
-    embed.add_field(name="ID", value=all_stats["accountId"], inline=True)
+    embed.add_field(name="ID", value=" ", inline=True)
     embed.add_field(name="Duo stats", value='\u200b', inline=False)
     embed.add_field(name="K/D", value=KDvalue, inline=True)
     score = p2["score"]
