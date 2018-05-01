@@ -46,9 +46,12 @@ async def create_role(ctx, *, name):
 async def ftn(ctx, platform ,*, player):
     headers = {'TRN-Api-Key': '5d24cc04-926b-4922-b864-8fd68acf482e'}
     r = requests.get('https://api.fortnitetracker.com/v1/profile/{}/{}'.format(platform, player), headers=headers)
-    file = open('Stats.txt', 'w')
-    file.write(r.text)
-    await bot.send_file(ctx.message.channel, 'Stats.txt', content="Stats for " + player)
+    stats = json.loads(r.text)
+    embed = discord.Embed(title="Stats for {}".format(player), description="Stats found: ", colour=0xe73c24)
+    stats = stats["stats"]
+    KD = stats["kd"]
+    embed.add_field(name="K/D", value=KD.value, inline=False)
+    await bot.say(embed=embed)
 
     
 @bot.event
