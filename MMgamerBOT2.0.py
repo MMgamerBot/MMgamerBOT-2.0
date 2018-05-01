@@ -48,7 +48,7 @@ async def ftn(ctx, platform ,*, player):
     r = requests.get('https://api.fortnitetracker.com/v1/profile/{}/{}'.format(platform, player), headers=headers)
     file = open('Stats.txt', 'w')
     file.write(r.text)
-    await bot.send_file(ctx.message.channel, 'Stats.txt', content=r.text)
+    await bot.send_file(ctx.message.channel, 'Stats.txt', content="Stats for " + player)
 
     
 @bot.event
