@@ -54,7 +54,7 @@ async def on_command_error(ctx, error):
     else:
         embed = discord.Embed(title="Error:",
                               description=f"{ctx}",
-                              colour=0xe73c24)
+                              colour=0x66009D)
         await bot.send_message(error.message.channel, embed=embed)
 
 @bot.command(pass_context=True)
