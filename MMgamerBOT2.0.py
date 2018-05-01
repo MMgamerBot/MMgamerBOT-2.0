@@ -53,7 +53,7 @@ async def ftn(ctx, platform ,*, player):
     duo = stats["p2"]
     KDDuo = duo["kd"]
     KDDuovalue = KDDuo["value"]
-    TRNDuoRanking = duo["trnRanking"]
+    TRNDuoRanking = duo["trnRating"]
     embed.add_field(name="General information", value='\u200b', inline=False)
     embed.add_field(name="ID", value=all_stats["accountId"], inline=True)
     embed.add_field(name="Duo stats", value='\u200b', inline=False)
