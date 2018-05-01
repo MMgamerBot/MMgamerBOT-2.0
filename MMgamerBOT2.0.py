@@ -49,7 +49,8 @@ async def ftn(ctx, platform ,*, player):
     stats = json.loads(r.text)
     embed = discord.Embed(title="Stats for {}".format(player), description="Stats found: ", colour=0xe73c24)
     stats = stats["stats"]
-    KD = stats["kd"]
+    p2 = stats["p2"]
+    KD = p2["kd"]
     embed.add_field(name="K/D", value=KD.value, inline=False)
     await bot.say(embed=embed)
 
