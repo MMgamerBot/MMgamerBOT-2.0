@@ -54,6 +54,7 @@ async def ftn(ctx, platform ,*, player):
     KDDuo = duo["kd"]
     KDDuovalue = KDDuo["value"]
     TRNDuoRanking = duo["trnRating"]
+    winsData = duo["top1"]
     embed.add_field(name="General information", value='\u200b', inline=False)
     embed.add_field(name="ID", value=all_stats["accountId"], inline=True)
     embed.add_field(name="Duo stats", value='\u200b', inline=False)
@@ -61,6 +62,7 @@ async def ftn(ctx, platform ,*, player):
     embed.add_field(name="TRN Rating", value=TRNDuoRanking["value"], inline=True)
     duoscore = duo["score"]
     embed.add_field(name="Score", value=duoscore["value"], inline=True)
+    embed.add_field(name="Wins", value=winsData["value"], inline=True)
     await bot.say(embed=embed)
 
     
