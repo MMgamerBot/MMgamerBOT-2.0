@@ -51,7 +51,7 @@ async def ftn(ctx, platform ,*, player):
     stats = stats["stats"]
     p2 = stats["p2"]
     KD = p2["kd"]
-    embed.add_field(name="K/D", value=KD.value, inline=False)
+    embed.add_field(name="K/D", value=KD, inline=False)
     await bot.say(embed=embed)
 
     
