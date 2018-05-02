@@ -122,10 +122,16 @@ async def github(ctx):
 
 @bot.command(pass_context=True)
 async def mute(ctx, member: discord.Member, time: int, *, reason):
+    await bot.send_message(member, f"You have been muted for {time} Seconds in {ctx.message.server.name}! Be shure to read the rules again! ")
     role = discord.utils.get(ctx.message.server.roles, name="Muted")
     await bot.add_roles(member, role)
+    embed = discord.Embed(title="MUTED", description="{} You have been Muted for **{}** Seconds. Reason: {}".format(member.mention, time, reason), color=0x66009D)
+    embed.set_thumbnail(url=member.avatar_url)
+    embed.set_author(name=ctx.message.author.name, icon_url=ctx.message.author.avatar_url)
+    await bot.say(embed=embed)
     await asyncio.sleep(time)
     await bot.remove_roles(member, role)
+    await bot.send_message(member, f"You have been unmuted! Be careful!")
 
 
 @bot.command(pass_context=True)
