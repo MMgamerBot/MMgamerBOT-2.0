@@ -50,19 +50,21 @@ async def ftn(ctx, platform ,*, player):
     all_stats = json.loads(r.text)
     embed = discord.Embed(title="Stats for {}".format(player), description="Stats found: ", colour=0xe73c24)
     stats = stats["stats"]
-    duo = stats["p2"]
-    KDDuo = duo["kd"]
-    KDDuovalue = KDDuo["value"]
-    TRNDuoRanking = duo["trnRating"]
-    winsData = duo["top1"]
+    Solo = stats["p2"]
+    KDSolo = Solo["kd"]
+    KDSolovalue = KDSolo["value"]
+    TRNSoloRanking = Solo["trnRating"]
+    winsData = Solo["top1"]
+    Soloscore = Solo["score"]
     embed.add_field(name="General information", value='\u200b', inline=False)
     embed.add_field(name="ID", value=all_stats["accountId"], inline=True)
-    embed.add_field(name="Duo stats", value='\u200b', inline=False)
-    embed.add_field(name="K/D", value=KDDuovalue, inline=True)
-    embed.add_field(name="TRN Rating", value=TRNDuoRanking["value"], inline=True)
-    duoscore = duo["score"]
-    embed.add_field(name="Score", value=duoscore["value"], inline=True)
+    embed.add_field(name="Solo stats", value='\u200b', inline=False)
+    embed.add_field(name="K/D", value=KDSolovalue, inline=True)
+    embed.add_field(name="TRN Rating", value=TRNSoloRanking["value"], inline=True)
+    embed.add_field(name="Score", value=Soloscore["value"], inline=True)
     embed.add_field(name="Wins", value=winsData["value"], inline=True)
+    embed.add_field(name="Duo stats", value='\u200b', inline=False)
+
     await bot.say(embed=embed)
 
     
@@ -118,7 +120,14 @@ async def github(ctx):
     embed.set_author(icon_url="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png",name="MMgamer")
     await bot.say(embed=embed)
 
-    
+@bot.command(pass_context=True)
+async def mute(ctx, member: discord.member, time: int, *, reason):
+    role = discord.utils.get(ctx.message.server.roles, name="Muted")
+    await client.add_roles(member, role)
+    await asyncio.sleep(time)
+    await client.remove_role(member, role)
+
+
 @bot.command(pass_context=True)
 async def ami(ctx,*, role):
     if role in [role.name for role in ctx.message.author.roles]:
