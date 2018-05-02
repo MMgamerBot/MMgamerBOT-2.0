@@ -133,6 +133,7 @@ async def mute(ctx, member: discord.Member, time: int, *, reason):
     await bot.remove_roles(member, role)
     await bot.send_message(member, f"You have been unmuted! Be careful!")
     embed = discord.Embed(title="Member unmuted", description="{} Has been UnMuted".format(member.mention), color=0x66009D)
+    embed.set_author(name=member.name, icon_url=member.avatar_url)
     await bot.say(embed=embed)
 
 
