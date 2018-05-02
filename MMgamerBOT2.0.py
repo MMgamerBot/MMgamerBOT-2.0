@@ -132,6 +132,8 @@ async def mute(ctx, member: discord.Member, time: int, *, reason):
     await asyncio.sleep(time)
     await bot.remove_roles(member, role)
     await bot.send_message(member, f"You have been unmuted! Be careful!")
+    embed = discord.Embed(title="Member unmuted", description="{} Has been UnMuted".format(member.mention), color=0x66009D)
+    await bot.say(embed=embed)
 
 
 @bot.command(pass_context=True)
