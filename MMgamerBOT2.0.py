@@ -125,7 +125,7 @@ async def mute(ctx, member: discord.Member, time: int, *, reason):
     role = discord.utils.get(ctx.message.server.roles, name="Muted")
     await bot.add_roles(member, role)
     await asyncio.sleep(time)
-    await bot.remove_role(member, role)
+    await bot.remove_roles(member, role)
 
 
 @bot.command(pass_context=True)
