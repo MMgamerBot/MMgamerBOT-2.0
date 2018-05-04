@@ -63,21 +63,29 @@ async def ftn(ctx, platform ,*, player):
     TRNSoloRanking = Solo["trnRating"]
     winsDataSolo = Solo["top1"]
     Soloscore = Solo["score"]
-    Duo = stats["p10"]
+    SoloKills = Solo["kills"]
 
     embed.add_field(name="Solo stats", value='\u200b', inline=False)
     embed.add_field(name="K/D", value=KDSolovalue, inline=True)
     embed.add_field(name="TRN Rating", value=TRNSoloRanking["value"], inline=True)
     embed.add_field(name="Score", value=Soloscore["value"], inline=True)
     embed.add_field(name="Wins", value=winsDataSolo["value"], inline=True)
+    embed.add_field(name="Kills", value=SoloKills["value"], inline=True)
 
     #Dous
-
+    Duo = stats["p10"]
+    KDDuo = Duo["kd"]
+    KDSolovalue = KDDuo["value"]
+    TRNDuoRanking = Duo["trnRating"]
+    winsDataDuo = Duo["top1"]
+    Duoscore = Duo["score"]
+    DuoKills = Duo["kills"]
     embed.add_field(name="Duo stats", value='\u200b', inline=False)
     embed.add_field(name="K/D", value=Duovalue, inline=True)
     embed.add_field(name="TRN Rating", value=TRNDuoRanking["value"], inline=True)
     embed.add_field(name="Score", value=Duoscore["value"], inline=True)
     embed.add_field(name="Wins", value=winsDataDuo["value"], inline=True)
+    embed.add_field(name="Kills", value=DuoKills["value"], inline=True)
 
     await bot.say(embed=embed)
 
