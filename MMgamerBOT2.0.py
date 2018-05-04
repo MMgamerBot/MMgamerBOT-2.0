@@ -48,7 +48,7 @@ async def ftn(ctx, platform ,*, player):
     r = requests.get('https://api.fortnitetracker.com/v1/profile/{}/{}'.format(platform, player), headers=headers)
     stats = json.loads(r.text)
     all_stats = json.loads(r.text)
-    embed = discord.Embed(title="Stats for {}".format(player), description="Stats found: ", colour=0xe73c24)
+    embed = discord.Embed(title="Stats for {}".format(player), description="Stats found: ", colour=0x66009D)
     stats = stats["stats"]
 
     #General
