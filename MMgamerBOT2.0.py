@@ -50,20 +50,34 @@ async def ftn(ctx, platform ,*, player):
     all_stats = json.loads(r.text)
     embed = discord.Embed(title="Stats for {}".format(player), description="Stats found: ", colour=0xe73c24)
     stats = stats["stats"]
+
+    #General
+
+    embed.add_field(name="General information", value='\u200b', inline=False)
+    embed.add_field(name="ID", value=all_stats["accountId"], inline=True)
+
+    #Solos
     Solo = stats["p2"]
     KDSolo = Solo["kd"]
     KDSolovalue = KDSolo["value"]
     TRNSoloRanking = Solo["trnRating"]
-    winsData = Solo["top1"]
+    winsDataSolo = Solo["top1"]
     Soloscore = Solo["score"]
-    embed.add_field(name="General information", value='\u200b', inline=False)
-    embed.add_field(name="ID", value=all_stats["accountId"], inline=True)
+    Duo = stats["p10"]
+
     embed.add_field(name="Solo stats", value='\u200b', inline=False)
     embed.add_field(name="K/D", value=KDSolovalue, inline=True)
     embed.add_field(name="TRN Rating", value=TRNSoloRanking["value"], inline=True)
     embed.add_field(name="Score", value=Soloscore["value"], inline=True)
-    embed.add_field(name="Wins", value=winsData["value"], inline=True)
+    embed.add_field(name="Wins", value=winsDataSolo["value"], inline=True)
+
+    #Dous
+
     embed.add_field(name="Duo stats", value='\u200b', inline=False)
+    embed.add_field(name="K/D", value=Duovalue, inline=True)
+    embed.add_field(name="TRN Rating", value=TRNDuoRanking["value"], inline=True)
+    embed.add_field(name="Score", value=Duoscore["value"], inline=True)
+    embed.add_field(name="Wins", value=winsDataDuo["value"], inline=True)
 
     await bot.say(embed=embed)
 
