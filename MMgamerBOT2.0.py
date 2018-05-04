@@ -75,7 +75,7 @@ async def ftn(ctx, platform ,*, player):
     #Dous
     Duo = stats["p10"]
     KDDuo = Duo["kd"]
-    KDSolovalue = KDDuo["value"]
+    KDDuovalue = KDDuo["value"]
     TRNDuoRanking = Duo["trnRating"]
     winsDataDuo = Duo["top1"]
     Duoscore = Duo["score"]
