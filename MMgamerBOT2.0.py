@@ -81,7 +81,7 @@ async def ftn(ctx, platform ,*, player):
     Duoscore = Duo["score"]
     DuoKills = Duo["kills"]
     embed.add_field(name="Duo stats", value='\u200b', inline=False)
-    embed.add_field(name="K/D", value=Duovalue, inline=True)
+    embed.add_field(name="K/D", value=KDDuovalue, inline=True)
     embed.add_field(name="TRN Rating", value=TRNDuoRanking["value"], inline=True)
     embed.add_field(name="Score", value=Duoscore["value"], inline=True)
     embed.add_field(name="Wins", value=winsDataDuo["value"], inline=True)
