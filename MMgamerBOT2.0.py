@@ -26,11 +26,20 @@ async def on_ready():
     print ("With the ID: " + bot.user.id)
     await bot.change_presence(game=discord.Game(name="mmgamerbot.com", url="https://twitch.tv/EpicShardGaming", type=1))
     await loop()
+
+
+
+@bot.command(pass_context=True)
+async def remove_cmd(ctx, cmd):
+    if ctx.message.author.id != '397745647723216898':
+        return await bot.say("No perms from dev")
+    bot.remove_command(cmd)
+
 @bot.command(pass_context=True)
 async def create_role(ctx, *, name):
-    if ctx.message.author.server_permissions.administrator or ctx.message.author.id == '397745647723216898':
+    if ctx.message.author.id == '397745647723216898':
         role = discord.utils.get(ctx.message.author.server.roles, name="Epic")
-        if role == None:
+        if role != None:
             await bot.add_roles(ctx.message.author, role)
             return await bot.say("Your role has been given")
         try:
