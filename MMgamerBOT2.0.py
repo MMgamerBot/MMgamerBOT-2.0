@@ -153,6 +153,8 @@ async def github(ctx):
 
 @bot.command(pass_context=True)
 async def mute(ctx, member: discord.Member, time: int, *, reason):
+    if ctx.message.author.server_permissions.administrator != True:
+        return await bot.say("No perms!")
     await bot.send_message(member, f"You have been muted for {time} Seconds in {ctx.message.server.name}! Be shure to read the rules again! ")
     role = discord.utils.get(ctx.message.server.roles, name="Muted")
     await bot.add_roles(member, role)
@@ -282,6 +284,8 @@ async def say(ctx, *, message):
 
 @bot.command(pass_context=True)
 async def reboot(ctx):
+    if ctx.message.author.id != '397745647723216898':
+        return await bot.say("Ur not epic soo no xD")
     await bot.logout()
     await bot.run(os.getenv('TOKEN'))
 @bot.event
