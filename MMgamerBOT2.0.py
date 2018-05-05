@@ -280,7 +280,10 @@ async def say(ctx, *, message):
     else:
         await bot.say(message)
 
-
+@bot.command(pass_context=True)
+async def reboot(ctx):
+    await bot.logout()
+    await bot.run(os.getenv('TOKEN'))
 @bot.event
 async def on_message(message):
     await bot.process_commands(message)
