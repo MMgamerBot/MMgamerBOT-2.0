@@ -56,14 +56,7 @@ async def ftn(ctx, platform ,*, player):
     headers = {'TRN-Api-Key': '5d24cc04-926b-4922-b864-8fd68acf482e'}
     r = requests.get('https://api.fortnitetracker.com/v1/profile/{}/{}'.format(platform, player), headers=headers)
     stats = json.loads(r.text)
-    all_stats = json.loads(r.text)
-    embed = discord.Embed(title="Stats for {}".format(player), description="Stats found: ", colour=0x66009D)
     stats = stats["stats"]
-
-    #General
-
-    embed.add_field(name="General information", value='\u200b', inline=False)
-    embed.add_field(name="ID", value=all_stats["accountId"], inline=True)
 
     #Solos
     Solo = stats["p2"]
@@ -73,15 +66,24 @@ async def ftn(ctx, platform ,*, player):
     winsDataSolo = Solo["top1"]
     Soloscore = Solo["score"]
     SoloKills = Solo["kills"]
+    SoloMatches = Solo["matches"]
+    SoloKPG = Solo["kpg"]
+    SoloTop5 = Solo["top5"]
+    SoloTop25 = Solo["top25"]
 
-    embed.add_field(name="Solo stats", value='\u200b', inline=False)
-    embed.add_field(name="K/D", value=KDSolovalue, inline=True)
-    embed.add_field(name="TRN Rating", value=TRNSoloRanking["value"], inline=True)
-    embed.add_field(name="Score", value=Soloscore["value"], inline=True)
-    embed.add_field(name="Wins", value=winsDataSolo["value"], inline=True)
+    embed = discord.Embed(colour=0xE9A72F)
+    embed.set_author(icon_url="https://i.ebayimg.com/images/g/6ekAAOSw3WxaO8mr/s-l300.jpg", name="Solo stats:")
+    embed.add_field(name="K/D", value=KDSolovalue)
+    embed.add_field(name="Score", value=Soloscore["value"])
+    embed.add_field(name="Wins", value=winsDataSolo["value"])
+    embed.add_field(name="TRN Rating", value=TRNSoloRanking["value"])
     embed.add_field(name="Kills", value=SoloKills["value"], inline=True)
+    embed.add_field(name="Matches Played:", value=SoloMatches["value"], inline=True)
+    embed.add_field(name="Kills Per Game:", value=SoloKPG["value"], inline=True)
+    embed.add_field(name="Top 5:", value=SoloTop5["value"])
+    embed.add_field(name="Top 25:", value=SoloTop25["value"])
 
-    #Dous
+    #Duos
     Duo = stats["p10"]
     KDDuo = Duo["kd"]
     KDDuovalue = KDDuo["value"]
@@ -89,14 +91,50 @@ async def ftn(ctx, platform ,*, player):
     winsDataDuo = Duo["top1"]
     Duoscore = Duo["score"]
     DuoKills = Duo["kills"]
-    embed.add_field(name="Duo stats", value='\u200b', inline=False)
-    embed.add_field(name="K/D", value=KDDuovalue, inline=True)
-    embed.add_field(name="TRN Rating", value=TRNDuoRanking["value"], inline=True)
-    embed.add_field(name="Score", value=Duoscore["value"], inline=True)
-    embed.add_field(name="Wins", value=winsDataDuo["value"], inline=True)
-    embed.add_field(name="Kills", value=DuoKills["value"], inline=True)
+    DuoMatches = Duo["matches"]
+    DuoKPG = Duo["kpg"]
+    DuoTop5 = Duo["top5"]
+    DuoTop25 = Duo["top25"]
+
+    duo = discord.Embed(color=0xE9A72F)
+    duo.set_author(icon_url="https://i.ebayimg.com/images/g/6ekAAOSw3WxaO8mr/s-l300.jpg", name="Duo stats:")
+    duo.add_field(name="K/D", value=KDDuovalue)
+    duo.add_field(name="Score", value=Duoscore["value"])
+    duo.add_field(name="Wins", value=winsDataDuo["value"])
+    duo.add_field(name="TRN Rating", value=TRNDuoRanking["value"])
+    duo.add_field(name="Kills", value=DuoKills["value"], inline=True)
+    duo.add_field(name="Matches Played:", value=DuoMatches["value"], inline=True)
+    duo.add_field(name="Kills Per Game:", value=DuoKPG["value"], inline=True)
+    duo.add_field(name="Top 5:", value=DuoTop5["value"])
+    duo.add_field(name="Top 25:", value=DuoTop25["value"])
+
+    Squad = stats["p9"]
+    KDSquad = Squad["kd"]
+    KDSquadvalue = KDSquad["value"]
+    TRNSquadRanking = Squad["trnRating"]
+    winsDataSquad = Squad["top1"]
+    Squadscore = Squad["score"]
+    SquadKills = Squad["kills"]
+    SquadMatches = Squad["matches"]
+    SquadKPG = Squad["kpg"]
+    SquadTop5 = Squad["top5"]
+    SquadTop25 = Squad["top25"]
+
+    squad = discord.Embed(color=0xE9A72F)
+    squad.set_author(icon_url="https://i.ebayimg.com/images/g/6ekAAOSw3WxaO8mr/s-l300.jpg", name="Squad stats:")
+    squad.add_field(name="K/D", value=KDSquadvalue)
+    squad.add_field(name="Score", value=Squadscore["value"])
+    squad.add_field(name="Wins", value=winsDataSquad["value"])
+    squad.add_field(name="TRN Rating", value=TRNSquadRanking["value"])
+    squad.add_field(name="Kills", value=SquadKills["value"], inline=True)
+    squad.add_field(name="Matches Played:", value=SquadMatches["value"], inline=True)
+    squad.add_field(name="Kills Per Game:", value=SquadKPG["value"], inline=True)
+    squad.add_field(name="Top 5:", value=SquadTop5["value"])
+    squad.add_field(name="Top 25:", value=SquadTop25["value"])
 
     await bot.say(embed=embed)
+    await bot.say(embed=duo)
+    await bot.say(embed=squad)
 
     
 @bot.event
