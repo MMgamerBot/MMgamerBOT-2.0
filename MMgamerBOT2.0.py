@@ -156,7 +156,7 @@ async def help(ctx):
     if False:
         pass
     else:
-        embed=discord.Embed(title="Help", description="There are too many commands to show here so I have broken stuff down into categorys:\n -Info commands do `!helpinfo`\n -Fun commands do `!helpfun`\n - Other commands to `!helpother`\n -Bot Admin commands do `!helpadmin`", color=0x66009D)
+        embed=discord.Embed(title="Help", description="There are too many commands to show here so I have broken stuff down into categorys:\n -Info commands do `!helpinfo`\n -Fun commands do `!helpfun`\n - Other commands do `!helpmisc`\n -Bot Admin commands do `!helpadmin`", color=0x66009D)
         embed.set_thumbnail(url="https://i.imgur.com/JABkpQb.png")
         await bot.say(embed=embed)
 
@@ -174,7 +174,7 @@ async def helpfun(ctx):
 
 @bot.command(pass_context=True)
 async def helpmisc(ctx):
-    embed=discord.Embed(title="Misc Help", description="Misc help:\n •`!warn <user> <reason> - Warns a user (Also DM's)\n •`!kick <@user>` - Kicks the user from the server\n `!ban <@user>` - Bans a user for the server\n •`!ami <@role>|<rolename>` - Tells you if you have that specific role in the server\n •`!github` - Gets you the bot's github repo\n •`!mute <@user>` - Mutes a user!", color=0x66009D)    
+    embed=discord.Embed(title="Misc Help", description="Misc help:\n •`!warn <user> <reason>` - Warns a user (Also DM's)\n •`!kick <@user>` - Kicks the user from the server\n •`!ban <@user>` - Bans a user for the server\n •`!ami <@role>|<rolename>` - Tells you if you have that specific role in the server\n •`!github` - Gets you the bot's github repo\n •`!mute <@user>` - Mutes a user!", color=0x66009D)    
     embed.set_thumbnail(url="https://i.imgur.com/JABkpQb.png")
     await bot.say(embed=embed)
 
