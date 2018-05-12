@@ -162,13 +162,19 @@ async def help(ctx):
 
 @bot.command(pass_context=True)
 async def helpinfo(ctx):
-    embed=discord.Embed(title="Help", description="Info Commands:\n • `!ftn pc <player>` - Gets fortnite players status.\n •`!info <@mention>` - Gets some info on the server.\n •`all_servers` - Shows all servers the bot is in.\n •`!urban <querey>` -Searches the urbandic for your query", color=0x66009D)
+    embed=discord.Embed(title="Help", description="Info Commands:\n • `!ftn pc <player>` - Gets fortnite players status.\n •`!info <@mention>` - Gets some info on the server.\n •`!all_servers` - Shows all servers the bot is in.\n •`!urban <querey>` -Searches the urbandic for your query", color=0x66009D)
     embed.set_thumbnail(url="https://i.imgur.com/JABkpQb.png")
     await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
 async def helpfun(ctx):
     embed=discord.Embed(title="Fun Help!", description="Fun commands:\n •`!cat` - Gets you a select cat GIF.\n •`!dog` - Gets you a cool dog GIF.")
+    embed.set_thumbnail(url="https://i.imgur.com/JABkpQb.png")
+    await bot.say(embed=embed)
+
+@bot.command(pass_context=True)
+async def helpmisc(ctx):
+    embed=discord.Embed(title="Misc Help", description="Misc help:\n •`!warn <user> <reason> - Warns a user (Also DM's)\n •`!kick <@user>` - Kicks the user from the server\n `!ban <@user>` - Bans a user for the server\n •`!ami <@role>|<rolename>` - Tells you if you have that specific role in the server\n •`!github` - Gets you the bot's github repo\n •`!mute <@user>` - Mutes a user!", color=0x66009D)    
     embed.set_thumbnail(url="https://i.imgur.com/JABkpQb.png")
     await bot.say(embed=embed)
 
@@ -341,7 +347,7 @@ async def on_message(message):
     await bot.process_commands(message)
 @bot.event
 async def on_member_join(member: discord.Member):
-    embed = discord.Embed(title="User Joined!", description="{} Has Just Joined Us! Everyone hide ur headsets".format(member.name), color=0x66009D)
+    embed = discord.Embed(title="User Joined!", description="{} Has Just Joined Us! Welcome them!".format(member.name), color=0x66009D)
     embed.set_thumbnail(url=member.avatar_url)
     await bot.send_message(bot.get_channel('437163805512826899'), embed=embed)
 
