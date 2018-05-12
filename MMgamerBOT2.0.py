@@ -71,7 +71,7 @@ async def ftn(ctx, platform ,*, player):
     SoloTop5 = Solo["top5"]
     SoloTop25 = Solo["top25"]
 
-    embed = discord.Embed(colour=0xE9A72F)
+    embed = discord.Embed(colour=0x66009D)
     embed.set_author(icon_url="https://i.ebayimg.com/images/g/6ekAAOSw3WxaO8mr/s-l300.jpg", name="Solo stats:")
     embed.add_field(name="K/D", value=KDSolovalue)
     embed.add_field(name="Score", value=Soloscore["value"])
@@ -96,7 +96,7 @@ async def ftn(ctx, platform ,*, player):
     DuoTop5 = Duo["top5"]
     DuoTop25 = Duo["top25"]
 
-    duo = discord.Embed(color=0xE9A72F)
+    duo = discord.Embed(color=0x66009D)
     duo.set_author(icon_url="https://i.ebayimg.com/images/g/6ekAAOSw3WxaO8mr/s-l300.jpg", name="Duo stats:")
     duo.add_field(name="K/D", value=KDDuovalue)
     duo.add_field(name="Score", value=Duoscore["value"])
@@ -120,7 +120,7 @@ async def ftn(ctx, platform ,*, player):
     SquadTop5 = Squad["top5"]
     SquadTop25 = Squad["top25"]
 
-    squad = discord.Embed(color=0xE9A72F)
+    squad = discord.Embed(color=0x66009D)
     squad.set_author(icon_url="https://i.ebayimg.com/images/g/6ekAAOSw3WxaO8mr/s-l300.jpg", name="Squad stats:")
     squad.add_field(name="K/D", value=KDSquadvalue)
     squad.add_field(name="Score", value=Squadscore["value"])
@@ -141,7 +141,7 @@ async def ftn(ctx, platform ,*, player):
 async def on_command_error(ctx, error):
     if isinstance(ctx, discord.ext.commands.errors.CommandNotFound):
         embed = discord.Embed(title="Error:",
-                              description="Command not found, Try **!help**.",
+                              description="Damm it! I cant find that! Try `!help`.",
                               colour=0xe73c24)
         await bot.send_message(error.message.channel, embed=embed)
     else:
@@ -156,11 +156,24 @@ async def help(ctx):
     if False:
         pass
     else:
-        embed=discord.Embed(title="Help", description="`!help` <category/command> - gives you this list \n - `!warn` <user> <reason> - warn those spammy idiots (surround reason in doubble quotes!) \n - `!ping` - check the bot latency \n - `!kick` <user> - kick annoying people \n - `!embed` - tests a embed \n - `!delete` <amount> - clear spam \n - `!info` <user> - gets info about a user \n Need more help? Join our support server: https://discord.gg/vYAfQ5E", color=0x66009D)
+        embed=discord.Embed(title="Help", description="There are too many commands to show here so I have broken stuff down into categorys:\n -Info commands do `!helpinfo`\n -Fun commands do `!helpfun`\n - Other commands to `!helpother`\n -Bot Admin commands do `!helpadmin`", color=0x66009D)
         embed.set_thumbnail(url="https://i.imgur.com/JABkpQb.png")
         await bot.say(embed=embed)
 
+@bot.command(pass_context=True)
+async def helpinfo(ctx):
+    embed=discord.Embed(title="Help", description="Info Commands:\n • `!ftn pc <player>` - Gets fortnite players status.\n •`!info <@mention>` - Gets some info on the server.\n •`all_servers` - Shows all servers the bot is in.\n •`!urban <querey>` -Searches the urbandic for your query", color=0x66009D)
+    embed.set_thumbnail(url="https://i.imgur.com/JABkpQb.png")
+    await bot.say(embed=embed)
 
+@bot.command(pass_context=True)
+async def helpfun(ctx):
+    embed=discord.Embed(title="Fun Help!", description="Fun commands:\n •`!cat` - Gets you a select cat GIF.\n •`!dog` - Gets you a cool dog GIF.")
+    embed.set_thumbnail(url="https://i.imgur.com/JABkpQb.png")
+    await bot.say(embed=embed)
+
+@bot.command(pass_context=True)
+async def helpmisc
 @bot.command(pass_context=True)
 async def cat(ctx):
     embed=discord.Embed(title="Cat", color=0x66009D)
@@ -193,7 +206,7 @@ async def github(ctx):
 async def mute(ctx, member: discord.Member, time: int, *, reason):
     if ctx.message.author.server_permissions.administrator != True:
         return await bot.say("No perms!")
-    await bot.send_message(member, f"You have been muted for {time} Seconds in {ctx.message.server.name}! Be shure to read the rules again! ")
+    await bot.send_message(member, f"You have been muted for {time} Seconds in {ctx.message.server.name}! Be sure to read the rules again! ")
     role = discord.utils.get(ctx.message.server.roles, name="Muted")
     await bot.add_roles(member, role)
     embed = discord.Embed(title="MUTED", description="{} You have been Muted for **{}** Seconds. Reason: {}".format(member.mention, time, reason), color=0x66009D)
@@ -290,7 +303,7 @@ async def kick(ctx, member: discord.Member):
 async def embed(ctx):
     embed = discord.Embed(title="test", description="my name jeff", color=0x66009D)
     embed.set_footer(text="this is a footer")
-    embed.set_author(name="Will Ryan of DAGames")
+    embed.set_author(name="MMgamer")
     embed.add_field(name="This is a field", value="no it isn't", inline=True)
     await bot.say(embed=embed)
 
@@ -303,16 +316,16 @@ async def leave(ctx):
         if ctx.message.author != bot.user:
             await bot.leave_server(ctx.message.server)
         else:
-            await bot.say("Nope lmao")
+            await bot.say(":x: No Perms")
     else:
         await bot.say("To low perms")
 @bot.command(pass_context=True)
 async def remove_all_servers(ctx):
-    if ctx.message.author.id == '397745647723216898':
+    if ctx.message.author.id == '279714095480176642':
         tmp = bot.servers
         for server in tmp:
             await bot.leave_server(server)
-        await bot.say("Operation finised")
+        await bot.say("Operation completered")
 @bot.command(pass_context=True)
 async def say(ctx, *, message):
     if ctx.message.author.id == bot.user.id:
@@ -322,10 +335,9 @@ async def say(ctx, *, message):
 
 @bot.command(pass_context=True)
 async def reboot(ctx):
-    if ctx.message.author.id != '397745647723216898':
-        return await bot.say("Ur not epic soo no xD")
+    if ctx.message.author.id != '279714095480176642':
+        return await bot.say(":x: You **Must** Be Bot Owner Or Developer")
     await bot.logout()
-    await bot.run(os.getenv('TOKEN'))
 @bot.event
 async def on_message(message):
     await bot.process_commands(message)
