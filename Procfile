@@ -1,1 +1,1 @@
-worker: python MyLittleBot.py
+worker: python MMgamerBOT2.0.py
