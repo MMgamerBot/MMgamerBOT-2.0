@@ -193,6 +193,23 @@ async def dog(ctx):
     await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
+async def add(ctx, a: int, b: int):
+    await ctx.send(a+b)
+
+@bot.command(pass_context=True)
+async def multiply(ctx, a: int, b: int):
+    await ctx.send(a*b)
+
+@bot.command(pass_context=True)
+ async def pfp(ctx):
+     embed=discord.Embed(title="Your profile picture", color=0x66009D)
+     embed.set_image(url=member.avatar_url)
+     embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
+     await bot.say(embed=embed)
+
+
+
+@bot.command(pass_context=True)
 async def help(ctx, module="all"):
     module = module.lower()
     if module == "info":
@@ -202,7 +219,7 @@ async def help(ctx, module="all"):
                 •`!info <@mention>` - Gets some info on the server.
                 •`!all_servers` - Shows all servers the bot is in.
                 •`!urban <querey>` -Searches the urbandic for your query
-                """
+                """)
                 await bot.say(embed=embed)
     elif module == 'all':
         embed=discord.Embed(title="Help", description="""
@@ -225,7 +242,7 @@ async def help(ctx, module="all"):
             Fun commands:
             •`!cat` - Gets you a select cat GIF.
             •`!dog` - Gets you a cool dog GIF
-                """
+                """)
             await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
@@ -383,7 +400,7 @@ async def say(ctx, *, message):
 
 @bot.command(pass_context=True)
 async def reboot(ctx):
-    if ctx.message.author.id != '279714095480176642':
+    if not (ctx.message.author.id == '279714095480176642' or ctx.message.author.id == '449641568182206476'):
         return await bot.say(":x: You **Must** Be Bot Owner Or Developer")
     await bot.logout()
 @bot.event
@@ -391,9 +408,24 @@ async def on_message(message):
     await bot.process_commands(message)
 @bot.event
 async def on_member_join(member: discord.Member):
-    embed = discord.Embed(title="User Joined!", description="{} Has Just Joined Us! Welcome them!".format(member.name), color=0x66009D)
-    embed.set_thumbnail(url=member.avatar_url)
-    await bot.send_message(bot.get_channel('437163805512826899'), embed=embed)
+    if member.server.id == '422083182167588864':
+        embed = discord.Embed(title="User Joined!", description="{} Has Just Joined Us! Welcome them!".format(member.name), color=0x66009D)
+        embed.set_thumbnail(url=member.avatar_url)
+        await bot.send_message(bot.get_channel('437163805512826899'), embed=embed)
+    else:
+        for i in member.server.channels:
+            if i.name.upper() == 'Welcome':
+                chl = i
+
+        embed = discord.Embed(title="User Joined!", description="{} Has Just Joined Us! Welcome them!".format(member.name), color=0x66009D)
+        embed.set_thumbnail(url=member.avatar_url)
+        try:
+            await bot.send_message(chl, embed=embed)
+        except Exception as e:
+            print(e)
+
+
+
 
 
 
