@@ -152,16 +152,6 @@ async def on_command_error(ctx, error):
                               colour=0xe73c24)
         await bot.send_message(error.message.channel, embed=embed)
 
-@bot.command(pass_context=True)
-async def help(ctx):
-    #Help categorys coming soon
-    if False:
-        pass
-    else:
-        embed=discord.Embed(title="Help", description="There are too many commands to show here so I have broken stuff down into categorys:\n -Info commands do `!helpinfo`\n -Fun commands do `!helpfun`\n - Other commands do `!helpmisc`\n -Bot Admin commands do `!helpadmin`", color=0x66009D)
-        embed.set_thumbnail(url="https://i.imgur.com/JABkpQb.png")
-        await bot.say(embed=embed)
-
 
 @bot.command(pass_context=True)
 async def helpfun(ctx):
