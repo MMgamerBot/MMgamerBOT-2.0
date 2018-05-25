@@ -162,41 +162,71 @@ async def help(ctx):
         embed.set_thumbnail(url="https://i.imgur.com/JABkpQb.png")
         await bot.say(embed=embed)
 
-@bot.command(pass_context=True)
-async def helpinfo(ctx):
-    embed=discord.Embed(title="Help", description="Info Commands:\n • `!ftn pc <player>` - Gets fortnite players status.\n •`!info <@mention>` - Gets some info on the server.\n •`!all_servers` - Shows all servers the bot is in.\n •`!urban <querey>` -Searches the urbandic for your query", color=0x66009D)
-    embed.set_thumbnail(url="https://i.imgur.com/JABkpQb.png")
-    embed.set_footer(icon_url="http://mmgamer.eu/assets/images/mmgamer-3507x2480.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
-    await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
 async def helpfun(ctx):
     embed=discord.Embed(title="Fun Help!", description="Fun commands:\n •`!cat` - Gets you a select cat GIF.\n •`!dog` - Gets you a cool dog GIF.")
     embed.set_thumbnail(url="https://i.imgur.com/JABkpQb.png")
-    embed.set_footer(icon_url="http://mmgamer.eu/assets/images/mmgamer-3507x2480.png", text="MMgamerBOT by MMgamer#3477 and EpicShardGamingYT#9597")
+    embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 and EpicShardGamingYT#9597")
     await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
 async def helpmisc(ctx):
     embed=discord.Embed(title="Misc Help", description="Misc help:\n •`!warn <user> <reason>` - Warns a user (Also DM's)\n •`!kick <@user>` - Kicks the user from the server\n •`!ban <@user>` - Bans a user for the server\n •`!ami <@role>|<rolename>` - Tells you if you have that specific role in the server\n •`!github` - Gets you the bot's github repo\n •`!mute <@user>` - Mutes a user!", color=0x66009D)
     embed.set_thumbnail(url="https://i.imgur.com/JABkpQb.png")
-    embed.set_footer(icon_url="http://mmgamer.eu/assets/images/mmgamer-3507x2480.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
+    embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
     await bot.say(embed=embed)
-     
+
 
 @bot.command(pass_context=True)
 async def cat(ctx):
     embed=discord.Embed(title="Cat", color=0x66009D)
     embed.set_image(url="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif")
-    embed.set_footer(icon_url="http://mmgamer.eu/assets/images/mmgamer-3507x2480.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
+    embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
     await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
 async def dog(ctx):
     embed=discord.Embed(title="A dog as requested:", color=0x66009D)
     embed.set_image(url="https://media.giphy.com/media/Bc3SkXz1M9mjS/giphy.gif")
-    embed.set_footer(icon_url="http://mmgamer.eu/assets/images/mmgamer-3507x2480.png", text="MMgamerBOT by MMgamer#3477 & ")
+    embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & ")
     await bot.say(embed=embed)
+
+@bot.command(pass_context=True)
+async def help(ctx, module="all"):
+    module = module.lower()
+    if module == "info":
+                embed=discord.Embed(title="Help", description="""
+                Info Commands:
+                • `!ftn pc <player>` - Gets fortnite players status.
+                •`!info <@mention>` - Gets some info on the server.
+                •`!all_servers` - Shows all servers the bot is in.
+                •`!urban <querey>` -Searches the urbandic for your query
+                """
+                await bot.say(embed=embed)
+    elif module == 'all':
+        embed=discord.Embed(title="Help", description="""
+        Info Commands:
+        • `!ftn pc <player>` - Gets fortnite players status.
+        •`!info <@mention>` - Gets some info on the server.
+        •`!all_servers` - Shows all servers the bot is in.
+        •`!urban <querey>` -Searches the urbandic for your query
+
+
+        Fun commands:
+         •`!cat` - Gets you a select cat GIF.
+         •`!dog` - Gets you a cool dog GIF
+
+
+        """, color=0x66009D)
+        await bot.say(embed=embed)
+    elif module == 'info':
+            embed=discord.Embed(title="Help", description="""
+            Fun commands:
+            •`!cat` - Gets you a select cat GIF.
+            •`!dog` - Gets you a cool dog GIF
+                """
+            await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
 async def urban(ctx, *, message):
@@ -279,7 +309,7 @@ async def info(ctx, user: discord.Member):
     embed.add_field(name="Playing:", value=user.game, inline=True)
     embed.add_field(name="Joined", value=user.joined_at, inline=True)
     embed.add_field(name="Account Creation:", value=user.created_at, inline=True)
-    embed.set_footer(icon_url="http://mmgamer.eu/assets/images/mmgamer-3507x2480.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
+    embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
     await client.say(embed=embed)
 
 
