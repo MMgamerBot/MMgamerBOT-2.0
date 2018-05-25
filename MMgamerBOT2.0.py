@@ -189,19 +189,20 @@ async def cat(ctx):
 async def dog(ctx):
     embed=discord.Embed(title="A dog as requested:", color=0x66009D)
     embed.set_image(url="https://media.giphy.com/media/Bc3SkXz1M9mjS/giphy.gif")
-    embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & ")
+    embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
     await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
 async def add(ctx, a: int, b: int):
-    await ctx.send(a+b)
+    await bot.say(a+b)
+
 
 @bot.command(pass_context=True)
 async def multiply(ctx, a: int, b: int):
-    await ctx.send(a*b)
+    await bot.say(a*b)
 
 @bot.command(pass_context=True)
- async def pfp(ctx):
+async def pfp(ctx):
      embed=discord.Embed(title="Your profile picture", color=0x66009D)
      embed.set_image(url=member.avatar_url)
      embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
