@@ -12,11 +12,11 @@ bot = commands.Bot(command_prefix='!')
 bot.remove_command('help')
 async def loop():
     while True:
-        await bot.change_presence(game=discord.Game(name="!help", url="https://twitch.tv/EpicShardGaming", type=1))
+        await bot.change_presence(game=discord.Game(name="!help", url="https://twitch.tv/MMgamerBOT", type=1))
         await asyncio.sleep(15)
-        await bot.change_presence(game=discord.Game(name="mmgamerbot.com", url="https://twitch.tv/EpicShardGaming", type=1))
+        await bot.change_presence(game=discord.Game(name="mmgamerbot.com", url="https://twitch.tv/MMgamerBOT", type=1))
         await asyncio.sleep(15)
-        await bot.change_presence(game=discord.Game(name="prefix: !", url="https://twitch.tv/EpicShardGaming", type=1))
+        await bot.change_presence(game=discord.Game(name="prefix: !", url="https://twitch.tv/MMgamerBOT", type=1))
         await asyncio.sleep(15)
 
 @bot.event
@@ -52,7 +52,9 @@ async def create_role(ctx, *, name):
         await bot.add_roles(ctx.message.author, role)
 
 @bot.command(pass_context=True)
-async def ftn(ctx, platform ,*, player):
+async def ftn(ctx, player, platform = None):
+    if platform == None:
+        platform = "pc"
     headers = {'TRN-Api-Key': '5d24cc04-926b-4922-b864-8fd68acf482e'}
     r = requests.get('https://api.fortnitetracker.com/v1/profile/{}/{}'.format(platform, player), headers=headers)
     stats = json.loads(r.text)
@@ -136,7 +138,7 @@ async def ftn(ctx, platform ,*, player):
     await bot.say(embed=duo)
     await bot.say(embed=squad)
 
-    
+
 @bot.event
 async def on_command_error(ctx, error):
     if isinstance(ctx, discord.ext.commands.errors.CommandNotFound):
@@ -164,30 +166,36 @@ async def help(ctx):
 async def helpinfo(ctx):
     embed=discord.Embed(title="Help", description="Info Commands:\n • `!ftn pc <player>` - Gets fortnite players status.\n •`!info <@mention>` - Gets some info on the server.\n •`!all_servers` - Shows all servers the bot is in.\n •`!urban <querey>` -Searches the urbandic for your query", color=0x66009D)
     embed.set_thumbnail(url="https://i.imgur.com/JABkpQb.png")
+    embed.set_footer(icon_url="http://mmgamer.eu/assets/images/mmgamer-3507x2480.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
     await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
 async def helpfun(ctx):
     embed=discord.Embed(title="Fun Help!", description="Fun commands:\n •`!cat` - Gets you a select cat GIF.\n •`!dog` - Gets you a cool dog GIF.")
     embed.set_thumbnail(url="https://i.imgur.com/JABkpQb.png")
+    embed.set_footer(icon_url="http://mmgamer.eu/assets/images/mmgamer-3507x2480.png", text="MMgamerBOT by MMgamer#3477 and EpicShardGamingYT#9597")
     await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
 async def helpmisc(ctx):
-    embed=discord.Embed(title="Misc Help", description="Misc help:\n •`!warn <user> <reason>` - Warns a user (Also DM's)\n •`!kick <@user>` - Kicks the user from the server\n •`!ban <@user>` - Bans a user for the server\n •`!ami <@role>|<rolename>` - Tells you if you have that specific role in the server\n •`!github` - Gets you the bot's github repo\n •`!mute <@user>` - Mutes a user!", color=0x66009D)    
+    embed=discord.Embed(title="Misc Help", description="Misc help:\n •`!warn <user> <reason>` - Warns a user (Also DM's)\n •`!kick <@user>` - Kicks the user from the server\n •`!ban <@user>` - Bans a user for the server\n •`!ami <@role>|<rolename>` - Tells you if you have that specific role in the server\n •`!github` - Gets you the bot's github repo\n •`!mute <@user>` - Mutes a user!", color=0x66009D)
     embed.set_thumbnail(url="https://i.imgur.com/JABkpQb.png")
+    embed.set_footer(icon_url="http://mmgamer.eu/assets/images/mmgamer-3507x2480.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
     await bot.say(embed=embed)
+     
 
 @bot.command(pass_context=True)
 async def cat(ctx):
     embed=discord.Embed(title="Cat", color=0x66009D)
     embed.set_image(url="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif")
+    embed.set_footer(icon_url="http://mmgamer.eu/assets/images/mmgamer-3507x2480.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
     await bot.say(embed=embed)
-    
+
 @bot.command(pass_context=True)
 async def dog(ctx):
     embed=discord.Embed(title="A dog as requested:", color=0x66009D)
     embed.set_image(url="https://media.giphy.com/media/Bc3SkXz1M9mjS/giphy.gif")
+    embed.set_footer(icon_url="http://mmgamer.eu/assets/images/mmgamer-3507x2480.png", text="MMgamerBOT by MMgamer#3477 & ")
     await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
@@ -199,7 +207,7 @@ async def urban(ctx, *, message):
         file.close()
         tmp = open('urban.txt', 'rb')
         await bot.send_file(ctx.message.channel, 'urban.txt', content=tmp)
- 
+
 @bot.command(pass_context=True)
 async def github(ctx):
     embed=discord.Embed(title="GitHub Repo",description="Our github repo: https://github.com/MMgamerBot/MMgamerBOT-2.0", color=0x66009D)
@@ -240,7 +248,7 @@ async def all_servers(ctx):
             embed.add_field(name=str(tmp), value=i.name, inline=False)
             tmp += 1
         await bot.say(embed=embed)
-                  
+
 
 @bot.command(pass_context=True)
 async def ping(ctx):
@@ -260,13 +268,19 @@ async def ban(ctx, member: discord.Member):
 
 @bot.command(pass_context=True)
 async def info(ctx, user: discord.Member):
-    embed=discord.Embed(title="Stats for {}".format(user.name), description="Show {} stat's".format(user.name), color=0x66009D)
-    embed.add_field(name="Name: ", value=user.name, inline=False)
-    embed.add_field(name="ID: ", value=user.id, inline=False)
-    embed.add_field(name="Status: ", value=user.status, inline=False)
-    embed.add_field(name="Top role: ", value=user.top_role, inline=False)
-    embed.add_field(name="Joined at: ", value=user.joined_at, inline=False)
-    await bot.say(embed=embed)
+    embed = discord.Embed(color=0xE9A72F)
+    embed.set_author(icon_url=user.avatar_url, name="Here's some info about {}".format(user.name))
+    embed.set_thumbnail(url=user.avatar_url)
+    embed.add_field(name="Name:", value=user.name, inline=True)
+    embed.add_field(name="Status:", value=user.status, inline=True)
+    embed.add_field(name="Users ID:", value=user.id, inline=True)
+    embed.add_field(name="Users Highest role:", value=user.top_role.mention, inline=True)
+    embed.add_field(name="Discriminator:", value=user.discriminator, inline=True)
+    embed.add_field(name="Playing:", value=user.game, inline=True)
+    embed.add_field(name="Joined", value=user.joined_at, inline=True)
+    embed.add_field(name="Account Creation:", value=user.created_at, inline=True)
+    embed.set_footer(icon_url="http://mmgamer.eu/assets/images/mmgamer-3507x2480.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
+    await client.say(embed=embed)
 
 
 
@@ -329,7 +343,7 @@ async def remove_all_servers(ctx):
         tmp = bot.servers
         for server in tmp:
             await bot.leave_server(server)
-        await bot.say("Operation completered")
+        await bot.say("Operation completed")
 @bot.command(pass_context=True)
 async def say(ctx, *, message):
     if ctx.message.author.id == bot.user.id:
