@@ -230,7 +230,7 @@ async def help(ctx, module="all"):
         Fun commands:
          •`!cat` - Gets you a select cat GIF.
          •`!dog` - Gets you a cool dog GIF.
-         •`!slap - Slapy Slpay Scratchy Bitey.
+         •`!slap` - Slapy Slpay Scratchy Bitey.
         Moderation Commands:
         •`!warn <user> <reason>` - Warns a user (Also DM's)
         •`!kick <@user>` - Kicks the user from the server
