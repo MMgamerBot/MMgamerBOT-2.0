@@ -16,7 +16,7 @@ async def loop():
         await asyncio.sleep(15)
         await bot.change_presence(game=discord.Game(name="mmgamerbot.com", url="https://twitch.tv/MMgamerBOT", type=1))
         await asyncio.sleep(15)
-        await bot.change_presence(game=discord.Game(name="prefix: !", url="https://twitch.tv/MMgamerBOT", type=1))
+        await bot.change_presence(game=discord.Game(name="prefix -> !", url="https://twitch.tv/MMgamerBOT", type=1))
         await asyncio.sleep(15)
 
 @bot.event
@@ -32,7 +32,7 @@ async def on_ready():
 @bot.command(pass_context=True)
 async def remove_cmd(ctx, cmd):
     if ctx.message.author.id != '397745647723216898':
-        return await bot.say("No perms from dev")
+        return await bot.say("No perms from developers")
     bot.remove_command(cmd)
 
 @bot.command(pass_context=True)
@@ -183,6 +183,13 @@ async def dog(ctx):
     await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
+async def slap(ctx):
+    embed=discord.Embed(title="Slap Slap Slap", color=0x66009D)
+    embed.set_image(url="https://media.giphy.com/media/s5zXKfeXaa6ZO/giphy.gif")
+    embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
+    await bot.say(embed=embed)
+
+@bot.command(pass_context=True)
 async def add(ctx, a: int, b: int):
     await bot.say(a+b)
 
@@ -193,7 +200,7 @@ async def multiply(ctx, a: int, b: int):
 
 @bot.command(pass_context=True)
 async def pfp(ctx, member: discord.Member):
-     embed=discord.Embed(title="Your profile picture", color=0x66009D)
+     embed=discord.Embed(title="The users profile picture", color=0x66009D)
      embed.set_image(url=member.avatar_url)
      embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
      await bot.say(embed=embed)
@@ -215,14 +222,25 @@ async def help(ctx, module="all"):
     elif module == 'all':
         embed=discord.Embed(title="Help", description="""
         Info Commands:
-        • `!ftn pc <player>` - Gets fortnite players status.
+        • `!ftn pc <player>` - Gets fortnite players status (pc only).
         •`!info <@mention>` - Gets some info on the server.
         •`!all_servers` - Shows all servers the bot is in.
         •`!urban <querey>` -Searches the urbandic for your query
+        •`!pfp <@user>` - Shows a users's profile picture
         Fun commands:
          •`!cat` - Gets you a select cat GIF.
-         •`!dog` - Gets you a cool dog GIF
+         •`!dog` - Gets you a cool dog GIF.
+         •`!slap - Slapy Slpay Scratchy Bitey.
+        Moderation Commands:
+        •`!warn <user> <reason>` - Warns a user (Also DM's)
+        •`!kick <@user>` - Kicks the user from the server
+        •`!ban <@user>` - Bans a user for the server
+        •`!mute <@user>` - Mutes a user!
+        Misc Commands:
+        •`!ami <@role>|<rolename>` - Tells you if you have that specific role in the server
+        •`!github` - Gets you the bot's github repo
         """, color=0x66009D)
+        embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
         await bot.say(embed=embed)
     elif module == 'info':
             embed=discord.Embed(title="Help", description="""
