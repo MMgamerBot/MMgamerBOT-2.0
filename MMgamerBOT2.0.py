@@ -24,7 +24,7 @@ async def on_ready():
     print ("Bot has Booted!")
     print ("I am running on " + bot.user.name)
     print ("With the ID: " + bot.user.id)
-    await bot.change_presence(game=discord.Game(name="mmgamerbot.com", url="https://twitch.tv/EpicShardGaming", type=1))
+    await bot.change_presence(game=discord.Game(name="mmgamerbot.com", url="https://twitch.tv/MMgamerBOT", type=1))
     await loop()
 
 
@@ -192,7 +192,7 @@ async def multiply(ctx, a: int, b: int):
     await bot.say(a*b)
 
 @bot.command(pass_context=True)
-async def pfp(ctx):
+async def pfp(ctx, member: discord.Member):
      embed=discord.Embed(title="Your profile picture", color=0x66009D)
      embed.set_image(url=member.avatar_url)
      embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
@@ -219,13 +219,9 @@ async def help(ctx, module="all"):
         •`!info <@mention>` - Gets some info on the server.
         •`!all_servers` - Shows all servers the bot is in.
         •`!urban <querey>` -Searches the urbandic for your query
-
-
         Fun commands:
          •`!cat` - Gets you a select cat GIF.
          •`!dog` - Gets you a cool dog GIF
-
-
         """, color=0x66009D)
         await bot.say(embed=embed)
     elif module == 'info':
