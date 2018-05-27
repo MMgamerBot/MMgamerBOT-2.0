@@ -26,37 +26,38 @@ async def on_ready():
     print ("With the ID: " + bot.user.id)
     await bot.change_presence(game=discord.Game(name="mmgamerbot.com", url="https://twitch.tv/MMgamerBOT", type=1))
     await loop()
+
 @bot.command(pass_context=True)
 async def lock(ctx, time=0):
     if ctx.message.author.server_permissions.administrator:
-            await client.delete_message(ctx.message)
+            await bot.delete_message(ctx.message)
             default = discord.utils.get(ctx.message.server.roles, name="Members")
             perms = default.permissions
             perms.send_messages = False
             try:
-                time = int(message.content.split()[1]) * 60 #time in minutes (seconds -> minutes)
+                time = time*60
             except IndexError: #Saves us having to check the len() of the args, also means we don't have to make redundent code here
                 time = 0
             await default.edit(permissions=perms)
             if time == 0: #Basically if it = 0 then the lock is perm until someoone !unlock's it
-                nEmbed = discord.Embed(title="Server Locked", description="The server has been locked by %s" % (ctx.message.author.mention), colour=0xFF5555)
+                nEmbed = discord.Embed(title="Server Locked", description="The server has been locked by %s" % (ctx.message.author.mention), colour=0x66009D)
             else:
-                nEmbed = discord.Embed(title="Server Locked", description="The server has been locked by %s for **%s minutes**" % (ctx.message.author.mention, str(time/60)), colour=0xFF5555)
+                nEmbed = discord.Embed(title="Server Locked", description="The server has been locked by %s for **%s minutes**" % (ctx.message.author.mention, str(time/60)), colour=0x66009D)
             nEmbed.set_footer(text="Made By EpicShardGamingYT and MMgamer")
             try:
-                logChannel = client.get_channel("447096454264389633")
+                logChannel = bot.get_channel("447096454264389633")
             except:
                 pass
             try:
-                notice = await client.say(embed=nEmbed)
+                notice = await bot.say(embed=nEmbed)
             except:
                 pass
-            await client.say(embed=nEmbed)
+            await bot.say(embed=nEmbed)
             if not time == 0:
                 await asyncio.sleep(time)
                 perms.send_messages = True
                 await default.edit(permissions=perms)
-                await client.delete_message(notice)
+                await bot.delete_message(notice)
 
 
 @bot.command(pass_context=True)
@@ -470,4 +471,3 @@ async def on_member_join(member: discord.Member):
 
 
 bot.run(os.getenv('TOKEN'))
-
