@@ -26,7 +26,37 @@ async def on_ready():
     print ("With the ID: " + bot.user.id)
     await bot.change_presence(game=discord.Game(name="mmgamerbot.com", url="https://twitch.tv/MMgamerBOT", type=1))
     await loop()
-
+@bot.command(pass_context=True)
+async def lock(ctx, time=0):
+    if ctx.message.author.server_permissions.administrator:
+            await client.delete_message(ctx.message)
+            default = discord.utils.get(ctx.message.server.roles, name="Members")
+            perms = default.permissions
+            perms.send_messages = False
+            try:
+                time = int(message.content.split()[1]) * 60 #time in minutes (seconds -> minutes)
+            except IndexError: #Saves us having to check the len() of the args, also means we don't have to make redundent code here
+                time = 0
+            await default.edit(permissions=perms)
+            if time == 0: #Basically if it = 0 then the lock is perm until someoone !unlock's it
+                nEmbed = discord.Embed(title="Server Locked", description="The server has been locked by %s" % (ctx.message.author.mention), colour=0xFF5555)
+            else:
+                nEmbed = discord.Embed(title="Server Locked", description="The server has been locked by %s for **%s minutes**" % (ctx.message.author.mention, str(time/60)), colour=0xFF5555)
+            nEmbed.set_footer(text="Made By EpicShardGamingYT and MMgamer")
+            try:
+                logChannel = client.get_channel("447096454264389633")
+            except:
+                pass
+            try:
+                notice = await client.say(embed=nEmbed)
+            except:
+                pass
+            await client.say(embed=nEmbed)
+            if not time == 0:
+                await asyncio.sleep(time)
+                perms.send_messages = True
+                await default.edit(permissions=perms)
+                await client.delete_message(notice)
 
 
 @bot.command(pass_context=True)
@@ -152,6 +182,10 @@ async def on_command_error(ctx, error):
                               colour=0xe73c24)
         await bot.send_message(error.message.channel, embed=embed)
 
+@bot.event
+async def on.message(message):
+
+
 
 @bot.command(pass_context=True)
 async def helpfun(ctx):
@@ -220,13 +254,14 @@ async def help(ctx, module="all"):
                 """)
                 await bot.say(embed=embed)
     elif module == 'all':
-        embed=discord.Embed(title="Help", description="""
+        embed=discord.Embed(title="All Help", description="""
         Info Commands:
-        • `!ftn pc <player>` - Gets fortnite players status (pc only).
+        •`!ftn pc <player>` - Gets fortnite players status (pc only).
         •`!info <@mention>` - Gets some info on the server.
         •`!all_servers` - Shows all servers the bot is in.
         •`!urban <querey>` -Searches the urbandic for your query
         •`!pfp <@user>` - Shows a users's profile picture
+        •`!all_servers` - Shows all servers the bot is in.
         Fun commands:
          •`!cat` - Gets you a select cat GIF.
          •`!dog` - Gets you a cool dog GIF.
@@ -235,7 +270,7 @@ async def help(ctx, module="all"):
         •`!warn <user> <reason>` - Warns a user (Also DM's)
         •`!kick <@user>` - Kicks the user from the server
         •`!ban <@user>` - Bans a user for the server
-        •`!mute <@user>` - Mutes a user!
+        •`!mute <@user>` - Mutes a user
         Misc Commands:
         •`!ami <@role>|<rolename>` - Tells you if you have that specific role in the server
         •`!github` - Gets you the bot's github repo
@@ -246,7 +281,8 @@ async def help(ctx, module="all"):
             embed=discord.Embed(title="Help", description="""
             Fun commands:
             •`!cat` - Gets you a select cat GIF.
-            •`!dog` - Gets you a cool dog GIF
+            •`!dog` - Gets you a cool dog GIF.
+            •`!slap` - Slapy Slpay Scratchy Bitey.
                 """)
             await bot.say(embed=embed)
 
