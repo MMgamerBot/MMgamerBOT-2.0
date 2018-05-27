@@ -60,10 +60,22 @@ async def lock(ctx, time=0):
             overwrite.read_messages = True
             for i in ctx.message.server.channels:
                 await bot.edit_channel_permissions(i, default, overwrite)
-            await bot.delete_message(notice)
+            try:
+                await bot.delete_message(notice)
+            except:
+                pass
 @bot.command(pass_context=True)
 async def unlock(ctx):
-    pass
+    overwrite = discord.PermissionOverwrite()
+    overwrite.read_messages = True
+    for i in ctx.message.server.channels:
+        await bot.edit_channel_permissions(i, default, overwrite)
+    try:
+        await bot.delete_message(notice)
+    except:
+        pass
+    embed=discord.Embed(title='Unlocked', description='Server got un-locked!')
+    await bot.say(embed=embed)
 
 
 @bot.command(pass_context=True)
