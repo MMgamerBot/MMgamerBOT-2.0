@@ -42,26 +42,26 @@ async def lock(ctx, time=0):
         overwrite.read_messages = True
         overwrite.ban_members = False
         await bot.edit_channel_permissions(ctx.message.channel, ctx.message.author, overwrite)
-            #perms.update(read_messages=False, send_messages=False)
+        #perms.update(read_messages=False, send_messages=False)
+        #default.permissions = perms
+        if time == 0: #Basically if it = 0 then the lock is perm until someoone !unlock's it
+            nEmbed = discord.Embed(title="Server Locked", description="The server has been locked by %s" % (ctx.message.author.mention), colour=0x66009D)
+            nEmbed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
+        try:
+            logChannel = bot.get_channel("447096454264389633")
+        except:
+            pass
+        try:
+            notice = await bot.say(embed=nEmbed)
+        except:
+            pass
+        #await bot.say(embed=nEmbed)
+        if not time == 0:
+            await asyncio.sleep(time)
+            perms.send_messages = True
             #default.permissions = perms
-            if time == 0: #Basically if it = 0 then the lock is perm until someoone !unlock's it
-                nEmbed = discord.Embed(title="Server Locked", description="The server has been locked by %s" % (ctx.message.author.mention), colour=0x66009D)
-                nEmbed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
-            try:
-                logChannel = bot.get_channel("447096454264389633")
-            except:
-                pass
-            try:
-                notice = await bot.say(embed=nEmbed)
-            except:
-                pass
-            #await bot.say(embed=nEmbed)
-            if not time == 0:
-                await asyncio.sleep(time)
-                perms.send_messages = True
-                #default.permissions = perms
-                await bot.edit_role(ctx.message.server, default, permissions=np)
-                await bot.delete_message(notice)
+            await bot.edit_role(ctx.message.server, default, permissions=np)
+            await bot.delete_message(notice)
 
 
 @bot.command(pass_context=True)
