@@ -36,7 +36,8 @@ async def lock(ctx, time=0):
             perms.send_messages = False
             try:
                 time = time*60
-                time = 0
+            except:
+                pass
             np = perms.none()
             perms.update(read_messages=False, send_messages=False)
             #default.permissions = perms
