@@ -419,8 +419,8 @@ async def embed(ctx):
 @bot.command(pass_context=True)
 async def get_inv(ctx):
     for i in bot.servers:
-        var = await bot.create_invite(i)
-        await bot.say(str(var.default_channel))
+        var = await bot.create_invite(i.default_channel)
+        await bot.say(str(var))
 
 @bot.command(pass_context=True)
 async def ball(ctx, question):
