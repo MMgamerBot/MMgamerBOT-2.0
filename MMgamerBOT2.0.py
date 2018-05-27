@@ -37,7 +37,7 @@ async def lock(ctx, time=0):
         except:
             pass
         overwrite = discord.PermissionOverwrite()
-        overwrite.read_messages = False
+        overwrite.send_messages = False
         for i in ctx.message.server.channels:
             await bot.edit_channel_permissions(i, default, overwrite)
         #perms.update(read_messages=False, send_messages=False)
@@ -57,7 +57,7 @@ async def lock(ctx, time=0):
         if not time == 0:
             await asyncio.sleep(time)
             overwrite = discord.PermissionOverwrite()
-            overwrite.read_messages = True
+            overwrite.send_messages = True
             for i in ctx.message.server.channels:
                 await bot.edit_channel_permissions(i, default, overwrite)
             try:
@@ -68,7 +68,7 @@ async def lock(ctx, time=0):
 async def unlock(ctx):
     default = discord.utils.get(ctx.message.server.roles, name="Member")
     overwrite = discord.PermissionOverwrite()
-    overwrite.read_messages = True
+    overwrite.send_messages = True
     for i in ctx.message.server.channels:
         await bot.edit_channel_permissions(i, default, overwrite)
     try:
