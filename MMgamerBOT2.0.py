@@ -39,7 +39,6 @@ async def lock(ctx, time=0):
             except:
                 pass
             np = perms.send_messages = True
-            tmp = discord.PermissionsOwerwrite
             tmppermissions = ctx.message.author.permissions_in(ctx.message.channel)
             tmppermissions.update(send_messages=False)
             bot.edit_channel_permissions(ctx.message.channel, default, permissions)
