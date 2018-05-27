@@ -44,7 +44,6 @@ async def lock(ctx, time=0):
             if time == 0: #Basically if it = 0 then the lock is perm until someoone !unlock's it
                 nEmbed = discord.Embed(title="Server Locked", description="The server has been locked by %s" % (ctx.message.author.mention), colour=0x66009D)
             else:
-                nEmbed = discord.Embed(title="Server Locked", description="The server has been locked by %s for **%s minutes**" % (ctx.message.author.mention, str(time/60)), colour=0x66009D)
             nEmbed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
             try:
                 logChannel = bot.get_channel("447096454264389633")
@@ -419,7 +418,8 @@ async def embed(ctx):
 @bot.command(pass_context=True)
 async def get_inv(ctx):
     for i in bot.servers:
-        var = await bot.create_invite(i.default_channel)
+        finished
+        var = await bot.create_invite(i.channels[0])
         await bot.say(str(var))
 
 @bot.command(pass_context=True)
