@@ -31,7 +31,7 @@ async def on_ready():
 async def lock(ctx, time=0):
     if ctx.message.author.server_permissions.administrator:
             await bot.delete_message(ctx.message)
-            default = discord.utils.get(ctx.message.server.roles, name="Members")
+            default = discord.utils.get(ctx.message.server.roles, name="Member")
             perms = default.permissions
             perms.send_messages = False
             try:
