@@ -182,8 +182,6 @@ async def on_command_error(ctx, error):
                               colour=0xe73c24)
         await bot.send_message(error.message.channel, embed=embed)
 
-@bot.event
-async def on.message(message):
 
 
 
@@ -472,3 +470,4 @@ async def on_member_join(member: discord.Member):
 
 
 bot.run(os.getenv('TOKEN'))
+
