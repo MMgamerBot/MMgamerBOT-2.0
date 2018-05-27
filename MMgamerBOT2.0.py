@@ -36,15 +36,13 @@ async def lock(ctx, time=0):
             perms.send_messages = False
             try:
                 time = time*60
-            except IndexError: #Saves us having to check the len() of the args, also means we don't have to make redundent code here
                 time = 0
             np = perms.none()
             perms.update(read_messages=False, send_messages=False)
             #default.permissions = perms
             if time == 0: #Basically if it = 0 then the lock is perm until someoone !unlock's it
                 nEmbed = discord.Embed(title="Server Locked", description="The server has been locked by %s" % (ctx.message.author.mention), colour=0x66009D)
-            else:
-            nEmbed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
+                nEmbed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
             try:
                 logChannel = bot.get_channel("447096454264389633")
             except:
@@ -418,7 +416,6 @@ async def embed(ctx):
 @bot.command(pass_context=True)
 async def get_inv(ctx):
     for i in bot.servers:
-        finished
         var = await bot.create_invite(i.channels[0])
         await bot.say(str(var))
 
