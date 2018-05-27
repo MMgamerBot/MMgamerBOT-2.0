@@ -66,6 +66,7 @@ async def lock(ctx, time=0):
                 pass
 @bot.command(pass_context=True)
 async def unlock(ctx):
+    default = discord.utils.get(ctx.message.server.roles, name="Member")
     overwrite = discord.PermissionOverwrite()
     overwrite.read_messages = True
     for i in ctx.message.server.channels:
