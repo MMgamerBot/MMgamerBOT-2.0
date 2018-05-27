@@ -39,7 +39,7 @@ async def lock(ctx, time=0):
             except:
                 pass
             np = perms.send_messages = False
-            await bot.edit_role(ctx.guild, default, permissions=np)
+            await bot.edit_role(ctx.message.server, default, permissions=np)
             #perms.update(read_messages=False, send_messages=False)
             #default.permissions = perms
             if time == 0: #Basically if it = 0 then the lock is perm until someoone !unlock's it
@@ -58,7 +58,7 @@ async def lock(ctx, time=0):
                 await asyncio.sleep(time)
                 perms.send_messages = True
                 #default.permissions = perms
-                await bot.edit_role(ctx.guild, default, permissions=perms)
+                await bot.edit_role(ctx.message.server, default, permissions=perms)
                 await bot.delete_message(notice)
 
 
