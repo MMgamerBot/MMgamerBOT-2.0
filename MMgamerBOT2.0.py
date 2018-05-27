@@ -39,7 +39,7 @@ async def lock(ctx, time=0):
             except IndexError: #Saves us having to check the len() of the args, also means we don't have to make redundent code here
                 time = 0
             np = perms.none()
-            await perms.update(np)
+            await perms.update(read_messages=False, send_messages=False)
             #default.permissions = perms
             if time == 0: #Basically if it = 0 then the lock is perm until someoone !unlock's it
                 nEmbed = discord.Embed(title="Server Locked", description="The server has been locked by %s" % (ctx.message.author.mention), colour=0x66009D)
