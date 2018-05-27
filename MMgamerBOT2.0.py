@@ -30,18 +30,18 @@ async def on_ready():
 @bot.command(pass_context=True)
 async def lock(ctx, time=0):
     if ctx.message.author.server_permissions.administrator:
-            await bot.delete_message(ctx.message)
-            default = discord.utils.get(ctx.message.server.roles, name="Member")
-            perms = default.permissions
-            perms.send_messages = False
-            try:
-                time = time*60
-            except:
-                pass
-            np = perms.send_messages = True
-            tmppermissions = ctx.message.author.permissions_in(ctx.message.channel)
-            tmppermissions.update(send_messages=False)
-            await bot.edit_channel_permissions(ctx.message.channel, default, tmppermissions)
+        await bot.delete_message(ctx.message)
+        default = discord.utils.get(ctx.message.server.roles, name="Member")
+        perms = default.permissions
+        perms.send_messages = False
+        try:
+            time = time*60
+        except:
+            pass
+        overwrite = discord.PermissionOverwrite()
+        overwrite.read_messages = True
+        overwrite.ban_members = False
+        await bot.edit_channel_permissions(ctx.message.channel, ctx.message.author, overwrite)
             #perms.update(read_messages=False, send_messages=False)
             #default.permissions = perms
             if time == 0: #Basically if it = 0 then the lock is perm until someoone !unlock's it
