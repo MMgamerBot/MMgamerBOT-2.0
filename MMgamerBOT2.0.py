@@ -45,7 +45,7 @@ async def lock(ctx, time=0):
                 nEmbed = discord.Embed(title="Server Locked", description="The server has been locked by %s" % (ctx.message.author.mention), colour=0x66009D)
             else:
                 nEmbed = discord.Embed(title="Server Locked", description="The server has been locked by %s for **%s minutes**" % (ctx.message.author.mention, str(time/60)), colour=0x66009D)
-            nEmbed.set_footer(text="Made By EpicShardGamingYT and MMgamer")
+            nEmbed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
             try:
                 logChannel = bot.get_channel("447096454264389633")
             except:
@@ -54,7 +54,7 @@ async def lock(ctx, time=0):
                 notice = await bot.say(embed=nEmbed)
             except:
                 pass
-            await bot.say(embed=nEmbed)
+            #await bot.say(embed=nEmbed)
             if not time == 0:
                 await asyncio.sleep(time)
                 perms.send_messages = True
@@ -407,6 +407,7 @@ async def kick(ctx, member: discord.Member):
             await bot.say(":x: No perms!")
     else:
         await bot.say("You dont have perms")
+
 @bot.command(pass_context=True)
 async def embed(ctx):
     embed = discord.Embed(title="test", description="my name jeff", color=0x66009D)
@@ -416,8 +417,15 @@ async def embed(ctx):
     await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
+async def get_inv(ctx):
+    for i in bot.servers:
+        var = await bot.create_invite(i)
+        await bot.say(str(var))
+
+@bot.command(pass_context=True)
 async def ball(ctx, question):
     await bot.say(random.choice(["NO", "Ofc", "Magic dosen't have all the awnsers", "No Idea"]))
+
 @bot.command(pass_context=True)
 async def leave(ctx):
     if ctx.message.author.server_permissions.administrator or ctx.message.author.id == '397745647723216898':
