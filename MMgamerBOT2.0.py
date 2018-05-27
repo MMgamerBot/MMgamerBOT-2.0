@@ -184,6 +184,7 @@ async def on_command_error(ctx, error):
                               description=f"{ctx}",
                               colour=0xe73c24)
         await bot.send_message(error.message.channel, embed=embed)
+        raise(ctx)
 
 
 
