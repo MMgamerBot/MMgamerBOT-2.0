@@ -57,7 +57,7 @@ async def help(ctx, module="all"):
             •`!add` - Adds two numbers.
             •`!multipy` - Multipys two numbers.
          """, colour=0x66009D)   
-        embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
+            embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
             await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
