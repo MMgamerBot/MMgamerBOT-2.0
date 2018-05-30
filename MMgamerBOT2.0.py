@@ -1,255 +1,4 @@
-import discord
-from discord.ext import commands
-from discord.ext.commands import Bot
-import asyncio
-import os
-import random
-import time
-import json
-import requests
 
-bot = commands.Bot(command_prefix='!')
-bot.remove_command('help')
-async def loop():
-    while True:
-        await bot.change_presence(game=discord.Game(name="!help", url="https://twitch.tv/MMgamerBOT", type=1))
-        await asyncio.sleep(15)
-        await bot.change_presence(game=discord.Game(name="mmgamerbot.com", url="https://twitch.tv/MMgamerBOT", type=1))
-        await asyncio.sleep(15)
-        await bot.change_presence(game=discord.Game(name="prefix -> !", url="https://twitch.tv/MMgamerBOT", type=1))
-        await asyncio.sleep(15)
-
-@bot.event
-async def on_ready():
-    print ("Bot has Booted!")
-    print ("I am running on " + bot.user.name)
-    print ("With the ID: " + bot.user.id)
-    await bot.change_presence(game=discord.Game(name="mmgamerbot.com", url="https://twitch.tv/MMgamerBOT", type=1))
-    await loop()
-
-@bot.command(pass_context=True)
-async def lock(ctx, time=0):
-    if ctx.message.author.server_permissions.administrator:
-        await bot.delete_message(ctx.message)
-        default = discord.utils.get(ctx.message.server.roles, name="Member")
-        try:
-            time = time*60
-        except:
-            pass
-        overwrite = discord.PermissionOverwrite()
-        overwrite.send_messages = False
-        for i in ctx.message.server.channels:
-            await bot.edit_channel_permissions(i, default, overwrite)
-        #perms.update(read_messages=False, send_messages=False)
-        #default.permissions = perms
-        if time == 0: #Basically if it = 0 then the lock is perm until someoone !unlock's it
-            nEmbed = discord.Embed(title="Server Locked", description="The server has been locked by %s" % (ctx.message.author.mention), colour=0x66009D)
-            nEmbed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
-        try:
-            logChannel = bot.get_channel("447096454264389633")
-        except:
-            pass
-        try:
-            notice = await bot.say(embed=nEmbed)
-        except:
-            pass
-        #await bot.say(embed=nEmbed)
-        if not time == 0:
-            await asyncio.sleep(time)
-            overwrite = discord.PermissionOverwrite()
-            overwrite.send_messages = True
-            for i in ctx.message.server.channels:
-                await bot.edit_channel_permissions(i, default, overwrite)
-            try:
-                await bot.delete_message(notice)
-            except:
-                pass
-@bot.command(pass_context=True)
-async def unlock(ctx):
-    default = discord.utils.get(ctx.message.server.roles, name="Member")
-    overwrite = discord.PermissionOverwrite()
-    overwrite.send_messages = True
-    for i in ctx.message.server.channels:
-        await bot.edit_channel_permissions(i, default, overwrite)
-    try:
-        await bot.delete_message(notice)
-    except:
-        pass
-    embed=discord.Embed(title='Unlocked', description='Server got un-locked!')
-    await bot.say(embed=embed)
-
-
-@bot.command(pass_context=True)
-async def remove_cmd(ctx, cmd):
-    if ctx.message.author.id != '397745647723216898':
-        return await bot.say("No perms from developers")
-    bot.remove_command(cmd)
-
-@bot.command(pass_context=True)
-async def create_role(ctx, *, name):
-    if ctx.message.author.id == '397745647723216898' or ctx.message.author.server_permissions.administrator:
-        role = discord.utils.get(ctx.message.author.server.roles, name=name)
-        if role != None:
-            await bot.add_roles(ctx.message.author, role)
-            return await bot.say("Your role has been given")
-        try:
-            await bot.create_role(ctx.message.server, name=name, permissions=discord.Permissions.all())
-        except Exception as e:
-            return await bot.say("Error: {}".format(e))
-        role = discord.utils.get(ctx.message.server.roles, name=name)
-        if role == None:
-            return await bot.say("No role found? Please try again to fix bug")
-        await bot.add_roles(ctx.message.author, role)
-
-@bot.command(pass_context=True)
-async def ftn(ctx, player, platform = None):
-    if platform == None:
-        platform = "pc"
-    headers = {'TRN-Api-Key': '5d24cc04-926b-4922-b864-8fd68acf482e'}
-    r = requests.get('https://api.fortnitetracker.com/v1/profile/{}/{}'.format(platform, player), headers=headers)
-    stats = json.loads(r.text)
-    stats = stats["stats"]
-
-    #Solos
-    Solo = stats["p2"]
-    KDSolo = Solo["kd"]
-    KDSolovalue = KDSolo["value"]
-    TRNSoloRanking = Solo["trnRating"]
-    winsDataSolo = Solo["top1"]
-    Soloscore = Solo["score"]
-    SoloKills = Solo["kills"]
-    SoloMatches = Solo["matches"]
-    SoloKPG = Solo["kpg"]
-    SoloTop5 = Solo["top5"]
-    SoloTop25 = Solo["top25"]
-
-    embed = discord.Embed(colour=0x66009D)
-    embed.set_author(icon_url="https://i.ebayimg.com/images/g/6ekAAOSw3WxaO8mr/s-l300.jpg", name="Solo stats:")
-    embed.add_field(name="K/D", value=KDSolovalue)
-    embed.add_field(name="Score", value=Soloscore["value"])
-    embed.add_field(name="Wins", value=winsDataSolo["value"])
-    embed.add_field(name="TRN Rating", value=TRNSoloRanking["value"])
-    embed.add_field(name="Kills", value=SoloKills["value"], inline=True)
-    embed.add_field(name="Matches Played:", value=SoloMatches["value"], inline=True)
-    embed.add_field(name="Kills Per Game:", value=SoloKPG["value"], inline=True)
-    embed.add_field(name="Top 5:", value=SoloTop5["value"])
-    embed.add_field(name="Top 25:", value=SoloTop25["value"])
-
-    #Duos
-    Duo = stats["p10"]
-    KDDuo = Duo["kd"]
-    KDDuovalue = KDDuo["value"]
-    TRNDuoRanking = Duo["trnRating"]
-    winsDataDuo = Duo["top1"]
-    Duoscore = Duo["score"]
-    DuoKills = Duo["kills"]
-    DuoMatches = Duo["matches"]
-    DuoKPG = Duo["kpg"]
-    DuoTop5 = Duo["top5"]
-    DuoTop25 = Duo["top25"]
-
-    duo = discord.Embed(color=0x66009D)
-    duo.set_author(icon_url="https://i.ebayimg.com/images/g/6ekAAOSw3WxaO8mr/s-l300.jpg", name="Duo stats:")
-    duo.add_field(name="K/D", value=KDDuovalue)
-    duo.add_field(name="Score", value=Duoscore["value"])
-    duo.add_field(name="Wins", value=winsDataDuo["value"])
-    duo.add_field(name="TRN Rating", value=TRNDuoRanking["value"])
-    duo.add_field(name="Kills", value=DuoKills["value"], inline=True)
-    duo.add_field(name="Matches Played:", value=DuoMatches["value"], inline=True)
-    duo.add_field(name="Kills Per Game:", value=DuoKPG["value"], inline=True)
-    duo.add_field(name="Top 5:", value=DuoTop5["value"])
-    duo.add_field(name="Top 25:", value=DuoTop25["value"])
-
-    Squad = stats["p9"]
-    KDSquad = Squad["kd"]
-    KDSquadvalue = KDSquad["value"]
-    TRNSquadRanking = Squad["trnRating"]
-    winsDataSquad = Squad["top1"]
-    Squadscore = Squad["score"]
-    SquadKills = Squad["kills"]
-    SquadMatches = Squad["matches"]
-    SquadKPG = Squad["kpg"]
-    SquadTop5 = Squad["top5"]
-    SquadTop25 = Squad["top25"]
-
-    squad = discord.Embed(color=0x66009D)
-    squad.set_author(icon_url="https://i.ebayimg.com/images/g/6ekAAOSw3WxaO8mr/s-l300.jpg", name="Squad stats:")
-    squad.add_field(name="K/D", value=KDSquadvalue)
-    squad.add_field(name="Score", value=Squadscore["value"])
-    squad.add_field(name="Wins", value=winsDataSquad["value"])
-    squad.add_field(name="TRN Rating", value=TRNSquadRanking["value"])
-    squad.add_field(name="Kills", value=SquadKills["value"], inline=True)
-    squad.add_field(name="Matches Played:", value=SquadMatches["value"], inline=True)
-    squad.add_field(name="Kills Per Game:", value=SquadKPG["value"], inline=True)
-    squad.add_field(name="Top 5:", value=SquadTop5["value"])
-    squad.add_field(name="Top 25:", value=SquadTop25["value"])
-
-    await bot.say(embed=embed)
-    await bot.say(embed=duo)
-    await bot.say(embed=squad)
-
-
-@bot.event
-async def on_command_error(ctx, error):
-    if isinstance(ctx, discord.ext.commands.errors.CommandNotFound):
-        embed = discord.Embed(title="Error:",
-                              description="Damm it! I cant find that! Try `!help`.",
-                              colour=0xe73c24)
-        await bot.send_message(error.message.channel, embed=embed)
-    else:
-        embed = discord.Embed(title="Error:",
-                              description=f"{ctx}",
-                              colour=0xe73c24)
-        await bot.send_message(error.message.channel, embed=embed)
-        raise(ctx)
-
-
-
-
-@bot.command(pass_context=True)
-async def helpfun(ctx):
-    embed=discord.Embed(title="Fun Help!", description="Fun commands:\n •`!cat` - Gets you a select cat GIF.\n •`!dog` - Gets you a cool dog GIF.")
-    embed.set_thumbnail(url="https://i.imgur.com/JABkpQb.png")
-    embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 and EpicShardGamingYT#9597")
-    await bot.say(embed=embed)
-
-@bot.command(pass_context=True)
-async def helpmisc(ctx):
-    embed=discord.Embed(title="Misc Help", description="Misc help:\n •`!warn <user> <reason>` - Warns a user (Also DM's)\n •`!kick <@user>` - Kicks the user from the server\n •`!ban <@user>` - Bans a user for the server\n •`!ami <@role>|<rolename>` - Tells you if you have that specific role in the server\n •`!github` - Gets you the bot's github repo\n •`!mute <@user>` - Mutes a user!", color=0x66009D)
-    embed.set_thumbnail(url="https://i.imgur.com/JABkpQb.png")
-    embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
-    await bot.say(embed=embed)
-
-
-@bot.command(pass_context=True)
-async def cat(ctx):
-    embed=discord.Embed(title="Cat", color=0x66009D)
-    embed.set_image(url="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif")
-    embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
-    await bot.say(embed=embed)
-
-@bot.command(pass_context=True)
-async def dog(ctx):
-    embed=discord.Embed(title="A dog as requested:", color=0x66009D)
-    embed.set_image(url="https://media.giphy.com/media/Bc3SkXz1M9mjS/giphy.gif")
-    embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
-    await bot.say(embed=embed)
-
-@bot.command(pass_context=True)
-async def slap(ctx):
-    embed=discord.Embed(title="Slap Slap Slap", color=0x66009D)
-    embed.set_image(url="https://media.giphy.com/media/s5zXKfeXaa6ZO/giphy.gif")
-    embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
-    await bot.say(embed=embed)
-
-@bot.command(pass_context=True)
-async def add(ctx, a: int, b: int):
-    await bot.say(a+b)
-
-
-@bot.command(pass_context=True)
-async def multiply(ctx, a: int, b: int):
-    await bot.say(a*b)
 
 @bot.command(pass_context=True)
 async def pfp(ctx, member: discord.Member):
@@ -285,6 +34,8 @@ async def help(ctx, module="all"):
          •`!cat` - Gets you a select cat GIF.
          •`!dog` - Gets you a cool dog GIF.
          •`!slap` - Slapy Slpay Scratchy Bitey.
+         •`!add` - Adds two numbers.
+         •`!multipy` - Multipys two numbers.
         Moderation Commands:
         •`!warn <user> <reason>` - Warns a user (Also DM's)
         •`!kick <@user>` - Kicks the user from the server
@@ -303,7 +54,10 @@ async def help(ctx, module="all"):
             •`!cat` - Gets you a select cat GIF.
             •`!dog` - Gets you a cool dog GIF.
             •`!slap` - Slapy Slpay Scratchy Bitey.
-                """)
+            •`!add` - Adds two numbers.
+            •`!multipy` - Multipys two numbers.
+         """, colour=0x66009D)   
+        embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
             await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
@@ -320,6 +74,12 @@ async def urban(ctx, *, message):
 async def github(ctx):
     embed=discord.Embed(title="GitHub Repo",description="Our github repo: https://github.com/MMgamerBot/MMgamerBOT-2.0", color=0x66009D)
     embed.set_author(icon_url="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png",name="MMgamer")
+    await bot.say(embed=embed)
+    
+@bot.command(pass_context=True)
+async def invite(ctx):
+    embed=discord.Embed(title="Invite The Bot To Your Server!",description="The bot's invite link: https://goo.gl/FLPW5b", color=0x66009D)
+    embed.set_author(icon_url="http://www.roofscreen.com/mediafiles/product_category_icons/10_strong-chain-icon.png",name="Link")
     await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
