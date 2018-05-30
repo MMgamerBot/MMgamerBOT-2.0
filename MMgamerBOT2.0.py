@@ -251,10 +251,12 @@ async def help(ctx, module="all"):
     if module == "info":
                 embed=discord.Embed(title="Help", description="""
                 Info Commands:
-                • `!ftn pc <player>` - Gets fortnite players status.
+                •`!ftn pc <player>` - Gets fortnite players status (pc only).
                 •`!info <@mention>` - Gets some info on the server.
                 •`!all_servers` - Shows all servers the bot is in.
                 •`!urban <querey>` -Searches the urbandic for your query
+                •`!pfp <@user>` >` - Shows a users's profile picture
+                •`!all_servers` - Shows all servers the bot is in.
                 """)
                 await bot.say(embed=embed)
     elif module == 'all':
@@ -281,6 +283,8 @@ async def help(ctx, module="all"):
         Misc Commands:
         •`!ami <@role>|<rolename>` - Tells you if you have that specific role in the server
         •`!github` - Gets you the bot's github repo
+        •`!invite` - Gets you the bot's invite
+
         """, color=0x66009D)
         embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
         await bot.say(embed=embed)
