@@ -246,7 +246,7 @@ async def pfp(ctx, member: discord.Member):
      embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
      await bot.say(embed=embed)
 
-@client.command(pass_context=True, name="StatChange", aliases=['cp'])
+@bot.command(pass_context=True, name="StatChange", aliases=['cp'])
 async def cp(ctx, pt: int, *, name):
     """
     Changes the bot status (Admin-Only)
@@ -254,10 +254,10 @@ async def cp(ctx, pt: int, *, name):
     if ctx.message.author.server_permissions.administrator:
         await client.change_presence(game=discord.Game(name=name, type=pt))
         embed = discord.Embed(title='Status changed!', description='The bot status was changed!', colour=mc)
-        await client.say(embed=embed)
+        await bot.say(embed=embed)
     else:
         embed=discord.Embed(title='No perms', description='You dont have perms to change the bot status', color=mc)
-        await client.say(embed=embed)
+        await bot.say(embed=embed)
 
 
 
