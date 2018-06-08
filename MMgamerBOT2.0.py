@@ -203,7 +203,10 @@ async def on_command_error(ctx, error):
         await bot.send_message(error.message.channel, embed=embed)
         raise(ctx)
 
-
+@client.event
+async def on_message(message):
+    if message.content.upper.startswith('<@428590210524119040>'):
+         await bot.send_message(message.channel, ":wave: Hello There! I'm MMgamerBOT Im a cool multi function bot coded by MMgamer#3477 & EpicShardGamingYT#9597! Do `!help` to see all my commands!\n :earth_africa: https://mmgamerbot.com \n Coded With :heart:!")
 
 
 @bot.command(pass_context=True)
@@ -243,6 +246,19 @@ async def pfp(ctx, member: discord.Member):
      embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
      await bot.say(embed=embed)
 
+@client.command(pass_context=True, name="StatChange", aliases=['cp'])
+async def cp(ctx, pt: int, *, name):
+    """
+    Changes the bot status (Admin-Only)
+    """
+    if ctx.message.author.server_permissions.administrator:
+        await client.change_presence(game=discord.Game(name=name, type=pt))
+        embed = discord.Embed(title='Status changed!', description='The bot status was changed!', colour=mc)
+        await client.say(embed=embed)
+    else:
+        embed=discord.Embed(title='No perms', description='You dont have perms to change the bot status', color=mc)
+        await client.say(embed=embed)
+
 
 
 @bot.command(pass_context=True)
@@ -274,7 +290,7 @@ async def help(ctx, module="all"):
          •`!slap` - Slapy Slpay Scratchy Bitey.
          •`!add` - Adds two numbers.
          •`!multipy` - Multipys two numbers.
-        Moderation Commands:
+        Moderation Commands (!help moderation`):
         •`!warn <user> <reason>` - Warns a user (Also DM's)
         •`!kick <@user>` - Kicks the user from the server
         •`!ban <@user>` - Bans a user for the server
@@ -284,11 +300,10 @@ async def help(ctx, module="all"):
         •`!ami <@role>|<rolename>` - Tells you if you have that specific role in the server
         •`!github` - Gets you the bot's github repo
         •`!invite` - Gets you the bot's invite
-
         """, color=0x66009D)
         embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
         await bot.say(embed=embed)
-    elif module == 'info':
+    elif module == 'fun':
             embed=discord.Embed(title="Help", description="""
             Fun commands:
             •`!cat` - Gets you a select cat GIF.
@@ -296,6 +311,17 @@ async def help(ctx, module="all"):
             •`!slap` - Slapy Slpay Scratchy Bitey.
             •`!add` - Adds two numbers.
             •`!multipy` - Multipys two numbers.
+         """, colour=0x66009D)   
+            embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
+            await bot.say(embed=embed)
+    elif module == 'moderation':
+            embed=discord.Embed(title="Help", description="""
+            Moderation Commands:
+            •`!warn <user> <reason>` - Warns a user (Also DM's)
+            •`!kick <@user>` - Kicks the user from the server
+            •`!ban <@user>` - Bans a user for the server
+            •`!mute <@user>` - Mutes a user
+            •`!leave` - Makes the bot leave the server
          """, colour=0x66009D)   
             embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
             await bot.say(embed=embed)
