@@ -203,7 +203,7 @@ async def on_command_error(ctx, error):
         await bot.send_message(error.message.channel, embed=embed)
         raise(ctx)
 
-@client.event
+@bot.event
 async def on_message(message):
     if message.content.upper.startswith('<@428590210524119040>'):
          await bot.send_message(message.channel, ":wave: Hello There! I'm MMgamerBOT Im a cool multi function bot coded by MMgamer#3477 & EpicShardGamingYT#9597! Do `!help` to see all my commands!\n :earth_africa: https://mmgamerbot.com \n Coded With :heart:!")
