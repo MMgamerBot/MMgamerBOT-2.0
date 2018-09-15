@@ -5,18 +5,42 @@ import asyncio
 import os
 import random
 import time
-import json
+from datetime import datetime
+from PIL import Image, ImageFilter
 import requests
+from io import BytesIO
+import inspect
+import praw
+import PIL.Image
+import pyspeedtest
+import sqlite3
 
-bot = commands.Bot(command_prefix='!')
+bot = commands.Bot(command_prefix='n!')
+reddit = praw.Reddit(client_id='u3zBVRAgVJ8eOw',
+                     client_secret='_TeCQvme4Nj3GEpUCgS5nwgeJZE',
+                     user_agent='discord:u3zBVRAgVJ8eOw:v1.0 (by /u/BoringJelly)')
+bot.launch_time = datetime.utcnow()
+st = pyspeedtest.SpeedTest()
+conn = sqlite3.connect('users.db', isolation_level=None)
+c = conn.cursor()
+c.execute("""CREATE TABLE IF NOT EXISTS Users(
+                      UserID TEXT,
+                      Xp INT,
+                      PRIMARY KEY(UserID))""")
+
+developers = ['279714095480176642', '344404945359077377']
+
+
+
+
 bot.remove_command('help')
 async def loop():
     while True:
-        await bot.change_presence(game=discord.Game(name="!help", url="https://twitch.tv/MMgamerBOT", type=1))
+        await bot.change_presence(game=discord.Game(name="n!help", url="https://twitch.tv/MMgamerBOT", type=1))
         await asyncio.sleep(15)
-        await bot.change_presence(game=discord.Game(name="mmgamerbot.com", url="https://twitch.tv/MMgamerBOT", type=1))
+        await bot.change_presence(game=discord.Game(name="some memez", url="https://twitch.tv/MMgamerBOT", type=1))
         await asyncio.sleep(15)
-        await bot.change_presence(game=discord.Game(name="prefix -> !", url="https://twitch.tv/MMgamerBOT", type=1))
+        await bot.change_presence(game=discord.Game(name="prefix -> n!", url="https://twitch.tv/MMgamerBOT", type=1))
         await asyncio.sleep(15)
 
 @bot.event
@@ -25,503 +49,432 @@ async def on_ready():
     print ("I am running on " + bot.user.name)
     print ("With the ID: " + bot.user.id)
     await bot.change_presence(game=discord.Game(name="mmgamerbot.com", url="https://twitch.tv/MMgamerBOT", type=1))
+    allokreq = requests.get("https://i.imgur.com/eS920kh.png")
+    allok = Image.open(BytesIO(allokreq.content)).convert("RGBA")
+    allok.show
     await loop()
 
-@bot.command(pass_context=True)
-async def lock(ctx, time=0):
-    if ctx.message.author.server_permissions.administrator:
-        await bot.delete_message(ctx.message)
-        default = discord.utils.get(ctx.message.server.roles, name="Member")
-        try:
-            time = time*60
-        except:
-            pass
-        overwrite = discord.PermissionOverwrite()
-        overwrite.send_messages = False
-        for i in ctx.message.server.channels:
-            await bot.edit_channel_permissions(i, default, overwrite)
-        #perms.update(read_messages=False, send_messages=False)
-        #default.permissions = perms
-        if time == 0: #Basically if it = 0 then the lock is perm until someoone !unlock's it
-            nEmbed = discord.Embed(title="Server Locked", description="The server has been locked by %s" % (ctx.message.author.mention), colour=0x66009D)
-            nEmbed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
-        try:
-            logChannel = bot.get_channel("447096454264389633")
-        except:
-            pass
-        try:
-            notice = await bot.say(embed=nEmbed)
-        except:
-            pass
-        #await bot.say(embed=nEmbed)
-        if not time == 0:
-            await asyncio.sleep(time)
-            overwrite = discord.PermissionOverwrite()
-            overwrite.send_messages = True
-            for i in ctx.message.server.channels:
-                await bot.edit_channel_permissions(i, default, overwrite)
-            try:
-                await bot.delete_message(notice)
-            except:
-                pass
-@bot.command(pass_context=True)
-async def unlock(ctx):
-    default = discord.utils.get(ctx.message.server.roles, name="Member")
-    overwrite = discord.PermissionOverwrite()
-    overwrite.send_messages = True
-    for i in ctx.message.server.channels:
-        await bot.edit_channel_permissions(i, default, overwrite)
-    try:
-        await bot.delete_message(notice)
-    except:
-        pass
-    embed=discord.Embed(title='Server Unlocked', description='The server was unlocked by %s' % (ctx.message.author.mention), colour=0x66009D)
-    await bot.say(embed=embed)
 
+#welcome to nexus
+
+#general commands
 
 @bot.command(pass_context=True)
-async def remove_cmd(ctx, cmd):
-    if ctx.message.author.id != '397745647723216898':
-        return await bot.say("No perms from developers")
-    bot.remove_command(cmd)
+async def ping(ctx):
+        t1 = time.perf_counter()
+        tmp = await bot.say("<a:discordloading:439643878803505162> pinging...")
+        t2 = time.perf_counter()
+        await bot.say("Ping: {}ms".format(round((t2-t1)*1000)))
+        await bot.delete_message(tmp)
 
-@bot.command(pass_context=True)
-async def create_role(ctx, *, name):
-    if ctx.message.author.id == '397745647723216898' or ctx.message.author.server_permissions.administrator:
-        role = discord.utils.get(ctx.message.author.server.roles, name=name)
-        if role != None:
-            await bot.add_roles(ctx.message.author, role)
-            return await bot.say("Your role has been given")
-        try:
-            await bot.create_role(ctx.message.server, name=name, permissions=discord.Permissions.all())
-        except Exception as e:
-            return await bot.say("Error: {}".format(e))
-        role = discord.utils.get(ctx.message.server.roles, name=name)
-        if role == None:
-            return await bot.say("No role found? Please try again to fix bug")
-        await bot.add_roles(ctx.message.author, role)
-
-@bot.command(pass_context=True)
-async def ftn(ctx, player, platform = None):
-    if platform == None:
-        platform = "pc"
-    headers = {'TRN-Api-Key': '5d24cc04-926b-4922-b864-8fd68acf482e'}
-    r = requests.get('https://api.fortnitetracker.com/v1/profile/{}/{}'.format(platform, player), headers=headers)
-    stats = json.loads(r.text)
-    stats = stats["stats"]
-
-    #Solos
-    Solo = stats["p2"]
-    KDSolo = Solo["kd"]
-    KDSolovalue = KDSolo["value"]
-    TRNSoloRanking = Solo["trnRating"]
-    winsDataSolo = Solo["top1"]
-    Soloscore = Solo["score"]
-    SoloKills = Solo["kills"]
-    SoloMatches = Solo["matches"]
-    SoloKPG = Solo["kpg"]
-    SoloTop5 = Solo["top5"]
-    SoloTop25 = Solo["top25"]
-
-    embed = discord.Embed(colour=0x66009D)
-    embed.set_author(icon_url="https://i.ebayimg.com/images/g/6ekAAOSw3WxaO8mr/s-l300.jpg", name="Solo stats:")
-    embed.add_field(name="K/D", value=KDSolovalue)
-    embed.add_field(name="Score", value=Soloscore["value"])
-    embed.add_field(name="Wins", value=winsDataSolo["value"])
-    embed.add_field(name="TRN Rating", value=TRNSoloRanking["value"])
-    embed.add_field(name="Kills", value=SoloKills["value"], inline=True)
-    embed.add_field(name="Matches Played:", value=SoloMatches["value"], inline=True)
-    embed.add_field(name="Kills Per Game:", value=SoloKPG["value"], inline=True)
-    embed.add_field(name="Top 5:", value=SoloTop5["value"])
-    embed.add_field(name="Top 25:", value=SoloTop25["value"])
-
-    #Duos
-    Duo = stats["p10"]
-    KDDuo = Duo["kd"]
-    KDDuovalue = KDDuo["value"]
-    TRNDuoRanking = Duo["trnRating"]
-    winsDataDuo = Duo["top1"]
-    Duoscore = Duo["score"]
-    DuoKills = Duo["kills"]
-    DuoMatches = Duo["matches"]
-    DuoKPG = Duo["kpg"]
-    DuoTop5 = Duo["top5"]
-    DuoTop25 = Duo["top25"]
-
-    duo = discord.Embed(color=0x66009D)
-    duo.set_author(icon_url="https://i.ebayimg.com/images/g/6ekAAOSw3WxaO8mr/s-l300.jpg", name="Duo stats:")
-    duo.add_field(name="K/D", value=KDDuovalue)
-    duo.add_field(name="Score", value=Duoscore["value"])
-    duo.add_field(name="Wins", value=winsDataDuo["value"])
-    duo.add_field(name="TRN Rating", value=TRNDuoRanking["value"])
-    duo.add_field(name="Kills", value=DuoKills["value"], inline=True)
-    duo.add_field(name="Matches Played:", value=DuoMatches["value"], inline=True)
-    duo.add_field(name="Kills Per Game:", value=DuoKPG["value"], inline=True)
-    duo.add_field(name="Top 5:", value=DuoTop5["value"])
-    duo.add_field(name="Top 25:", value=DuoTop25["value"])
-
-    Squad = stats["p9"]
-    KDSquad = Squad["kd"]
-    KDSquadvalue = KDSquad["value"]
-    TRNSquadRanking = Squad["trnRating"]
-    winsDataSquad = Squad["top1"]
-    Squadscore = Squad["score"]
-    SquadKills = Squad["kills"]
-    SquadMatches = Squad["matches"]
-    SquadKPG = Squad["kpg"]
-    SquadTop5 = Squad["top5"]
-    SquadTop25 = Squad["top25"]
-
-    squad = discord.Embed(color=0x66009D)
-    squad.set_author(icon_url="https://i.ebayimg.com/images/g/6ekAAOSw3WxaO8mr/s-l300.jpg", name="Squad stats:")
-    squad.add_field(name="K/D", value=KDSquadvalue)
-    squad.add_field(name="Score", value=Squadscore["value"])
-    squad.add_field(name="Wins", value=winsDataSquad["value"])
-    squad.add_field(name="TRN Rating", value=TRNSquadRanking["value"])
-    squad.add_field(name="Kills", value=SquadKills["value"], inline=True)
-    squad.add_field(name="Matches Played:", value=SquadMatches["value"], inline=True)
-    squad.add_field(name="Kills Per Game:", value=SquadKPG["value"], inline=True)
-    squad.add_field(name="Top 5:", value=SquadTop5["value"])
-    squad.add_field(name="Top 25:", value=SquadTop25["value"])
-
-    await bot.say(embed=embed)
-    await bot.say(embed=duo)
-    await bot.say(embed=squad)
-
-
-@bot.event
-async def on_command_error(ctx, error):
-    if isinstance(ctx, discord.ext.commands.errors.CommandNotFound):
-        embed = discord.Embed(title="Error:",
-                              description="Damm it! I cant find that! Try `!help`.",
-                              colour=0xe73c24)
-        await bot.send_message(error.message.channel, embed=embed)
-    else:
-        embed = discord.Embed(title="Error:",
-                              description=f"{ctx}",
-                              colour=0xe73c24)
-        await bot.send_message(error.message.channel, embed=embed)
-        raise(ctx)
-
-@bot.event
-async def on_message(message):
-    if message.content.upper.startswith('<@428590210524119040>'):
-         await bot.send_message(message.channel, ":wave: Hello There! I'm MMgamerBOT Im a cool multi function bot coded by MMgamer#3477 & EpicShardGamingYT#9597! Do `!help` to see all my commands!\n :earth_africa: https://mmgamerbot.com \n Coded With :heart:!")
-
-
-@bot.command(pass_context=True)
-async def cat(ctx):
-    embed=discord.Embed(title="Cat", color=0x66009D)
-    embed.set_image(url="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif")
-    embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
-    await bot.say(embed=embed)
-
-@bot.command(pass_context=True)
-async def dog(ctx):
-    embed=discord.Embed(title="A dog as requested:", color=0x66009D)
-    embed.set_image(url="https://media.giphy.com/media/Bc3SkXz1M9mjS/giphy.gif")
-    embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
-    await bot.say(embed=embed)
-
-@bot.command(pass_context=True)
-async def slap(ctx):
-    embed=discord.Embed(title="Slap Slap Slap", color=0x66009D)
-    embed.set_image(url="https://media.giphy.com/media/s5zXKfeXaa6ZO/giphy.gif")
-    embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
-    await bot.say(embed=embed)
-
-@bot.command(pass_context=True)
-async def add(ctx, a: int, b: int):
-    await bot.say(a+b)
-
-
-@bot.command(pass_context=True)
-async def multiply(ctx, a: int, b: int):
-    await bot.say(a*b)
-
-@bot.command(pass_context=True)
-async def pfp(ctx, member: discord.Member):
-     embed=discord.Embed(title="The users profile picture", color=0x66009D)
-     embed.set_image(url=member.avatar_url)
-     embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
-     await bot.say(embed=embed)
-
-@bot.command(pass_context=True, name="StatChange", aliases=['cp'])
-async def cp(ctx, pt: int, *, name):
-    """
-    Changes the bot status (Admin-Only)
-    """
-    if ctx.message.author.server_permissions.administrator:
-        await client.change_presence(game=discord.Game(name=name, type=pt))
-        embed = discord.Embed(title='Status changed!', description='The bot status was changed!', colour=mc)
-        await bot.say(embed=embed)
-    else:
-        embed=discord.Embed(title='No perms', description='You dont have perms to change the bot status', color=mc)
-        await bot.say(embed=embed)
-
-
-
-@bot.command(pass_context=True)
-async def help(ctx, module="all"):
-    module = module.lower()
-    if module == "info":
-                embed=discord.Embed(title="Help", description="""
-                Info Commands:
-                •`!ftn pc <player>` - Gets fortnite players status (pc only).
-                •`!info <@mention>` - Gets some info on the server.
-                •`!all_servers` - Shows all servers the bot is in.
-                •`!urban <querey>` -Searches the urbandic for your query
-                •`!pfp <@user>` >` - Shows a users's profile picture
-                •`!all_servers` - Shows all servers the bot is in.
-                """)
-                await bot.say(embed=embed)
-    elif module == 'all':
-        embed=discord.Embed(title="All Help", description="""
-        Info Commands:
-        •`!ftn pc <player>` - Gets fortnite players status (pc only).
-        •`!info <@mention>` - Gets some info on the server.
-        •`!all_servers` - Shows all servers the bot is in.
-        •`!urban <querey>` -Searches the urbandic for your query
-        •`!pfp <@user>` - Shows a users's profile picture
-        •`!all_servers` - Shows all servers the bot is in.
-        Fun commands:
-         •`!cat` - Gets you a select cat GIF.
-         •`!dog` - Gets you a cool dog GIF.
-         •`!slap` - Slapy Slpay Scratchy Bitey.
-         •`!add` - Adds two numbers.
-         •`!multipy` - Multipys two numbers.
-        Moderation Commands (!help moderation`):
-        •`!warn <user> <reason>` - Warns a user (Also DM's)
-        •`!kick <@user>` - Kicks the user from the server
-        •`!ban <@user>` - Bans a user for the server
-        •`!mute <@user>` - Mutes a user
-        •`!leave` - Makes the bot leave the server
-        Misc Commands:
-        •`!ami <@role>|<rolename>` - Tells you if you have that specific role in the server
-        •`!github` - Gets you the bot's github repo
-        •`!invite` - Gets you the bot's invite
-        """, color=0x66009D)
-        embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
-        await bot.say(embed=embed)
-    elif module == 'fun':
-            embed=discord.Embed(title="Help", description="""
-            Fun commands:
-            •`!cat` - Gets you a select cat GIF.
-            •`!dog` - Gets you a cool dog GIF.
-            •`!slap` - Slapy Slpay Scratchy Bitey.
-            •`!add` - Adds two numbers.
-            •`!multipy` - Multipys two numbers.
-         """, colour=0x66009D)   
-            embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
-            await bot.say(embed=embed)
-    elif module == 'moderation':
-            embed=discord.Embed(title="Help", description="""
-            Moderation Commands:
-            •`!warn <user> <reason>` - Warns a user (Also DM's)
-            •`!kick <@user>` - Kicks the user from the server
-            •`!ban <@user>` - Bans a user for the server
-            •`!mute <@user>` - Mutes a user
-            •`!leave` - Makes the bot leave the server
-         """, colour=0x66009D)   
-            embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
-            await bot.say(embed=embed)
-
-@bot.command(pass_context=True)
-async def urban(ctx, *, message):
-        r = requests.get("http://api.urbandictionary.com/v0/define?term={}".format(' '.join(message)))
-        r = json.loads(r.text)
-        file = open('urban.txt', 'w')
-        file.write("**Definition for {}** \n\n\n {}{}".format(r['list'][0]['word'],r['list'][0]['definition'],r['list'][0]['permalink']))
-        file.close()
-        tmp = open('urban.txt', 'rb')
-        await bot.send_file(ctx.message.channel, 'urban.txt', content=tmp)
-
-@bot.command(pass_context=True)
-async def github(ctx):
-    embed=discord.Embed(title="GitHub Repo",description="Our github repo: https://github.com/MMgamerBot/MMgamerBOT-2.0", color=0x66009D)
-    embed.set_author(icon_url="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png",name="MMgamer")
-    await bot.say(embed=embed)
-    
 @bot.command(pass_context=True)
 async def invite(ctx):
-    embed=discord.Embed(title="Invite The Bot To Your Server!",description="The bot's invite link: https://goo.gl/FLPW5b", color=0x66009D)
-    embed.set_author(icon_url="http://www.roofscreen.com/mediafiles/product_category_icons/10_strong-chain-icon.png",name="Link")
+    embed=discord.Embed(title="Invite The Bot To Your Server!",description="The bot's invite link: http://invite.nexerobot.cf", color=0x23272A)
+    embed.set_author(icon_url="https://png.icons8.com/small/1600/external-link.png",name="Link")
     await bot.say(embed=embed)
+
+@bot.command(pass_context=True)
+async def help(ctx):
+    with open("help.txt", "r") as txtfile:
+        content = txtfile.read()
+        embed = discord.Embed(description = "In this menu you can see all of nexeros commands! Here is some info! \n **Coded With:** <:py:439652582995132416> \n **Made By:** @MMgamer#3477 \n <:help:488764512879509514> **Support Server:** https://discord.gg/rRBQHbd" , title = "Help menu", color=0x23272A)
+        embed.add_field(name="\u200b", value=f"```{content}```")
+        await bot.say(embed=embed)
+
+@bot.command(pass_context=True)
+async def changelog(ctx):
+    with open("changelog.txt", "r") as txtfile:
+        content = txtfile.read()
+    await bot.say("```{0}```".format(content))
+    txtfile.close()
+
+@bot.command(pass_context=True)
+async def connection(ctx):
+    async with channel.typing():
+        ping = str(int(round(st.ping(), 0)))
+        down = round((st.download()/1000000), 2)
+        up = round((st.upload()/1000000), 2)
+        embed = discord.Embed(title="Connection Statistics", description="Current Connection Statistics", color=0x23272A)
+        embed.add_field(name="Ping", value="`%sms`" % ping)
+        embed.add_field(name="Download", value="`%s mbps`" % down)
+        embed.add_field(name="Upload", value="`%s mbps`" % up)
+        await bot.say(embed=em)
 
 @bot.command(pass_context=True)
 async def mute(ctx, member: discord.Member, time: int, *, reason):
     if ctx.message.author.server_permissions.administrator != True:
-        return await bot.say("No perms!")
+        return await bot.say("{} :x: You are not allowed to use this command!".format(ctx.message.author.mention))
     await bot.send_message(member, f"You have been muted for {time} Seconds in {ctx.message.server.name}! Be sure to read the rules again! ")
     role = discord.utils.get(ctx.message.server.roles, name="Muted")
     await bot.add_roles(member, role)
-    embed = discord.Embed(title="MUTED", description="{} You have been Muted for **{}** Seconds. Reason: {}".format(member.mention, time, reason), color=0x66009D)
+    embed = discord.Embed(title="MUTED", description="{} You have been Muted for **{}** Seconds. Reason: {}".format(member.mention, time, reason), color=0x23272A)
     embed.set_thumbnail(url=member.avatar_url)
     embed.set_author(name=ctx.message.author.name, icon_url=ctx.message.author.avatar_url)
     await bot.say(embed=embed)
     await asyncio.sleep(time)
     await bot.remove_roles(member, role)
     await bot.send_message(member, f"You have been unmuted! Be careful!")
-    embed = discord.Embed(title="Member unmuted", description="{} Has been UnMuted".format(member.mention), color=0x66009D)
+    embed = discord.Embed(title="Member unmuted", description="{} Has been Unmuted".format(member.mention), color=0x23272A)
     embed.set_author(name=member.name, icon_url=member.avatar_url)
     await bot.say(embed=embed)
 
-
-@bot.command(pass_context=True)
-async def ami(ctx,*, role):
-    if role in [role.name for role in ctx.message.author.roles]:
-        await bot.say("Yes")
-    else:
-        await bot.say("No")
-@bot.command(pass_context=True)
-async def all_servers(ctx):
-    if ctx.message.author.server_permissions.administrator:
-        embed = discord.Embed(title="All servers", description="lists all servers the bot is in.", color=0x66009D)
-        tmp = 1
-        for i in bot.servers:
-            embed.add_field(name=str(tmp), value=i.name, inline=False)
-            tmp += 1
-        await bot.say(embed=embed)
-
-
-@bot.command(pass_context=True)
-async def ping(ctx):
-        t1 = time.perf_counter()
-        tmp = await bot.say("pinging...")
-        t2 = time.perf_counter()
-        await bot.say("Ping: {}ms".format(round((t2-t1)*1000)))
-        await bot.delete_message(tmp)
-@bot.command(pass_context = True)
-async def ban(ctx, member: discord.Member):
-    if ctx.message.author.server_permissions.administrator or ctx.message.author.id == '397745647723216898':
-        try:
-            await bot.ban(member)
-            await bot.say(":thumbsup: Succesfully issued a ban!")
-        except discord.errors.Forbidden:
-            await bot.say(":x: No perms!")
-
-@bot.command(pass_context=True)
-async def info(ctx, user: discord.Member):
-    embed = discord.Embed(color=0xE9A72F)
-    embed.set_author(icon_url=user.avatar_url, name="Here's some info about {}".format(user.name))
-    embed.set_thumbnail(url=user.avatar_url)
-    embed.add_field(name="Name:", value=user.name, inline=True)
-    embed.add_field(name="Status:", value=user.status, inline=True)
-    embed.add_field(name="Users ID:", value=user.id, inline=True)
-    embed.add_field(name="Users Highest role:", value=user.top_role.mention, inline=True)
-    embed.add_field(name="Discriminator:", value=user.discriminator, inline=True)
-    embed.add_field(name="Playing:", value=user.game, inline=True)
-    embed.add_field(name="Joined", value=user.joined_at, inline=True)
-    embed.add_field(name="Account Creation:", value=user.created_at, inline=True)
-    embed.set_footer(icon_url="https://i.imgur.com/yB0Lig7.png", text="MMgamerBOT by MMgamer#3477 & EpicShardGamingYT#9597")
-    await client.say(embed=embed)
-
-
-
 @bot.command(pass_context=True)
 async def warn(ctx, userName: discord.Member ,*, reason: str):
-    if "Staff" in [role.name for role in ctx.message.author.roles] or ctx.message.author.server_permissions.administrator:
-        embed = discord.Embed(title="Warned", description="{} You have been warned for **{}**".format(userName.mention, reason), color=0x66009D)
+    if "n.staff" in [role.name for role in ctx.message.author.roles]:
+        embed = discord.Embed(title="Warned", description="{} You have been warned for **{}**".format(userName.mention, reason), color=0x23272A)
         embed.set_thumbnail(url=userName.avatar_url)
         embed.set_author(name=ctx.message.author.name, icon_url=ctx.message.author.avatar_url)
         await bot.say(embed=embed)
         await bot.send_message(userName, "You Have Been Warned. Reason: {}".format(reason))
     else:
         await bot.say("{} :x: You are not allowed to use this command!".format(ctx.message.author.mention))
-@bot.command(pass_context=True)
-@commands.has_permissions(manage_messages=True)
-async def delete(ctx, number):
-    msgs = []
-    number = int(number)
-    async for x in bot.logs_from(ctx.message.channel, limit = number):
-        msgs.append(x)
-    await bot.delete_messages(msgs)
-    embed = discord.Embed(title=f"{number} messages deleted", description="Wow, somebody's been spamming", color=0x66009D)
-    test = await bot.say(embed=embed)
-    await asyncio.sleep(10)
-    await bot.delete_message(test)
 
-@bot.command(pass_context = True)
-async def kick(ctx, member: discord.Member):
-    if ctx.message.author.server_permissions.administrator or ctx.message.author.id == '397745647723216898':
-        try:
-            await bot.kick(member)
-            await bot.say("Succesfully kicked ur nice friend :smiling_imp:!")
-        except discord.errors.Forbidden:
-            await bot.say(":x: No perms!")
+@bot.command(pass_context=True)
+async def purge(ctx, number):
+    if "n.staff" in [role.name for role in ctx.message.author.roles]:
+        msgs = []
+        number = int(number)
+        async for x in bot.logs_from(ctx.message.channel, limit = number):
+            msgs.append(x)
+        await bot.delete_messages(msgs)
+        embed = discord.Embed(title=f"{number} messages purged!", description="Everything is nice and clean now!", color=0x23272A)
+        test = await bot.say(embed=embed)
+        await asyncio.sleep(10)
+        await bot.delete_message(test)
     else:
-        await bot.say("You dont have perms")
+        await bot.say("{} :x: You are not allowed to use this command!".format(ctx.message.author.mention))
 
 @bot.command(pass_context=True)
-async def embed(ctx):
-    embed = discord.Embed(title="test", description="my name jeff", color=0x66009D)
-    embed.set_footer(text="this is a footer")
-    embed.set_author(name="MMgamer")
-    embed.add_field(name="This is a field", value="no it isn't", inline=True)
+async def kick(ctx, user: discord.User, *, reason: str):
+    if "n.staff" in [role.name for role in ctx.message.author.roles]:
+        await bot.kick(user)
+        await bot.say(f"boom, user has been kicked for reason: {reason}")
+    else:
+        await bot.say("{} :x: You are not allowed to use this command!".format(ctx.message.author.mention))
+
+@bot.command(pass_context=True)
+async def ban(ctx, user: discord.Member):
+    if "n.staff" in [role.name for role in ctx.message.author.roles]:
+        await bot.ban(user)
+        await bot.say(f"{user.name} Has been Banned! Let's hope he will never come back again lol.")
+    else:
+        await bot.say("{} :x: You are not allowed to use this command!".format(ctx.message.author.mention))
+
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(ctx, discord.ext.commands.errors.CommandNotFound):
+        embed = discord.Embed(title="Welp! Some old memes have cut the power cord!",
+                              description="That command was not found! We suggest you do `n!help` to see all of the commands",
+                              colour=0xe73c24)
+        await bot.send_message(error.message.channel, embed=embed)
+    else:
+        embed = discord.Embed(title="Welp! Someone was playing mineplex when this happened!",
+                              description=f"{ctx}",
+                              colour=0xe73c24)
+        await bot.send_message(error.message.channel, embed=embed)
+        raise(ctx)
+
+
+@bot.command(pass_context=True)
+async def add(ctx, a: int, b: int):
+    await bot.say(a+b)
+
+@bot.command(pass_context=True)
+async def accept(ctx):
+    if ctx.message.channel == "480002978049425427":
+        role = discord.utils.get(ctx.message.server.roles, name='Coder')
+        await bot.add_roles(ctx.message.author, role)
+        await bot.whisper("Thanks for Passing Through The Gate!")
+        await bot.delete_message(ctx.message)
+
+@bot.command(pass_context=True)
+async def multiply(ctx, a: int, b: int):
+    await bot.say(a*b)
+
+@bot.command(pass_context=True)
+async def lostshibe(ctx, user: discord.Member=None):
+    if user is None:
+        user = ctx.message.author
+    base = Image.open(BytesIO(requests.get('https://i.imgur.com/MRFa2n5.jpg%27').content)).convert('RGBA')
+    img = Image.open(BytesIO(requests.get(user.avatar_url).content)).convert("RGBA").resize((200, 200))
+    img = img.rotate(2, expand=1)
+    base.paste(img, (135, 170), img)
+    base.save("lostshibe.png")
+    await bot.send_file(ctx.message.channel, "lostshibe.png")
+
+@bot.command(pass_context=True)
+async def rulessetup(ctx):
+    if ctx.message.author.id == '279714095480176642':
+        #embed.add_field(name="", value="")
+        lowsev = discord.Embed(color =0x00FF00, title = "Low Severity [Warn]")
+        lowsev.add_field(name="Use english in all channels unless stated otherwise", value="Makes it easier for staff to moderate chat")
+        lowsev.add_field(name="Don't be annoying ", value="Includes minimoding and treating other users/staff unniceley")
+        lowsev.add_field(name="Don't undo what a staff member has done ", value="Name changes, etc")
+        lowsev.add_field(name="False/ Spam pings", value="Like ghost pinging, pinging staff for your meme, etc")
+        lowsev.add_field(name="Spamming of any sort", value="Includes Character Spam, Flooding Chat, Emoji Spam, Reaction Spam and ASCII text")
+        medsev = discord.Embed(color =0xffa500, title = "Medium Severity Kick and or Ban]")
+        medsev.add_field(name="Advertising of any sort", value="Servers (Inc DM), Products, etc")
+        medsev.add_field(name="Selfbotting", value="Its against the TOS don't do it.")
+        medsev.add_field(name="Sharing of illegal or false information", value="Untrue Rumors, etc")
+        maxserv = discord.Embed(color =0xff0000, title = "High serverity [Permanent Ban]")
+        maxserv.add_field(name="Sending NSFW ", value="Porn, Hentai, boobs, etc")
+        maxserv.add_field(name="Alts", value="We don't know what you do with them.")
+        maxserv.add_field(name="Sending files or programs that can damage another user's device", value="Viruses, Trojans, Adware, etc")
+        maxserv.add_field(name="Raiding", value="Ban and report to discord's trust and saftey team")
+        maxserv.add_field(name="Racism, Homofobia", value="We **must** respect everyone independent of race, sexuallity or country of residance")
+        await bot.say(embed=lowsev)
+        await bot.say(embed=medsev)
+        await bot.say(embed=maxserv)
+    else:
+        await bot.say("no. just no")
+
+
+
+
+@bot.command(pass_context=True)
+async def jail(ctx, user: discord.Member):
+    if user is None:
+        pass
+    else:
+        response = requests.get(user.avatar_url)
+        background = Image.open(BytesIO(response.content)).convert("RGBA")
+        foreground = Image.open("jail.png").convert("RGBA")
+        background.paste(foreground, (0, 0), foreground)
+        background.save("jailed.png")
+        await bot.send_file(ctx.message.channel, "jailed.png")
+
+
+@bot.command(pass_context=True)
+async def gay(ctx, user: discord.Member):
+    if user is None:
+        pass
+    else:
+        response = requests.get(user.avatar_url)
+        background = Image.open(BytesIO(response.content)).convert("RGBA")
+        foreground = Image.open("gay.png").convert("RGBA")
+        foreground.putalpha(128)
+        background.paste(foreground, (0, 0), foreground)
+        background.save("gaypfp.png")
+        await bot.send_file(ctx.message.channel, "gaypfp.png")
+
+@bot.command(pass_context=True)
+async def coder(ctx, user: discord.Member):
+    if user is None:
+        pass
+    else:
+        response = requests.get(user.avatar_url)
+        background = Image.open(BytesIO(response.content)).convert("RGBA")
+        foreground = Image.open("code.png").convert("RGBA")
+        foreground.putalpha(128)
+        background.paste(foreground, (0, 0), foreground)
+        background.save("codepfp.png")
+        await bot.send_file(ctx.message.channel, "codepfp.png")
+
+@bot.command(pass_context=True)
+async def brave(ctx, user: discord.Member):
+    if user is None:
+        pass
+    else:
+        basewidth = 125
+        response = requests.get(user.avatar_url)
+        background = Image.open(BytesIO(response.content)).convert("RGBA")
+        foreground = Image.open("bravebase.png").convert("RGBA")
+        wpercent = (basewidth / float(background.size[0]))
+        hsize = int((float(background.size[1]) * float(wpercent)))
+        background = background.resize((basewidth, hsize), PIL.Image.ANTIALIAS)
+        background.paste(foreground, (0, 0), foreground)
+        background.save("braverypfp.png")
+        await bot.send_file(ctx.message.channel, "braverypfp.png")
+
+@bot.command(pass_context=True)
+async def brilliance(ctx, user: discord.Member):
+    if user is None:
+        pass
+    else:
+        basewidth = 125
+        response = requests.get(user.avatar_url)
+        background = Image.open(BytesIO(response.content)).convert("RGBA")
+        foreground = Image.open("brilliancebase.png").convert("RGBA")
+        wpercent = (basewidth / float(background.size[0]))
+        hsize = int((float(background.size[1]) * float(wpercent)))
+        background = background.resize((basewidth, hsize), PIL.Image.ANTIALIAS)
+        background.paste(foreground, (0, 0), foreground)
+        background.save("brilliancepfp.png")
+        await bot.send_file(ctx.message.channel, "brilliancepfp.png")
+
+@bot.command(pass_context=True)
+async def balance(ctx, user: discord.Member):
+    if user is None:
+        pass
+    else:
+        basewidth = 125
+        response = requests.get(user.avatar_url)
+        background = Image.open(BytesIO(response.content)).convert("RGBA")
+        foreground = Image.open("balancebase.png").convert("RGBA")
+        wpercent = (basewidth / float(background.size[0]))
+        hsize = int((float(background.size[1]) * float(wpercent)))
+        background = background.resize((basewidth, hsize), PIL.Image.ANTIALIAS)
+        background.paste(foreground, (0, 0), foreground)
+        background.save("balancepfp.png")
+        await bot.send_file(ctx.message.channel, "balancepfp.png")
+
+@bot.command(pass_context=True)
+async def uptime(ctx):
+    delta_uptime = datetime.utcnow() - bot.launch_time
+    hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
+    minutes, seconds = divmod(remainder, 60)
+    days, hours = divmod(hours, 24)
+    weeks, days = divmod(days, 7)
+    embed = discord.Embed(color=0x23272A)
+    embed.add_field(name="Our bot's uptime :calendar_spiral:", value=f"Weeks: **{weeks}**\nDays: **{days}**\nHours: **{hours}**\nMinutes: **{minutes}**\nSeconds: **{seconds}**")
     await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
-async def get_inv(ctx):
-    for i in bot.servers:
-        var = await bot.create_invite(i.channels[0])
-        await bot.say(str(var))
-
-@bot.command(pass_context=True)
-async def ball(ctx, question):
-    await bot.say(random.choice(["NO", "Ofc", "Magic dosen't have all the awnsers", "No Idea"]))
-
-@bot.command(pass_context=True)
-async def leave(ctx):
-    if ctx.message.author.server_permissions.administrator or ctx.message.author.id == '397745647723216898':
-        if ctx.message.author != bot.user:
-            await bot.leave_server(ctx.message.server)
-        else:
-            await bot.say(":x: No Perms")
+async def source(ctx, *, text: str):
+    if ctx.message.author.id == 279714095480176642:
+        """Shows source code of a command."""
+        nl2 = '`'
+        nl = f"``{nl2}"
+        source_thing = inspect.getsource(bot.get_command(text).callback)
+        await bot.say(f"{nl}py\n{source_thing}{nl}")
     else:
-        await bot.say("To low perms")
-@bot.command(pass_context=True)
-async def remove_all_servers(ctx):
-    if ctx.message.author.id == '279714095480176642':
-        tmp = bot.servers
-        for server in tmp:
-            await bot.leave_server(server)
-        await bot.say("Operation completed")
-@bot.command(pass_context=True)
-async def say(ctx, *, message):
-    if ctx.message.author.id == bot.user.id:
-        return
-    else:
-        await bot.say(message)
+        await bot.say("{} :x: You are not allowed to use this command!".format(ctx.message.author.mention))
+
 
 @bot.command(pass_context=True)
-async def reboot(ctx):
-    if not (ctx.message.author.id == '279714095480176642' or ctx.message.author.id == '449641568182206476'):
-        return await bot.say(":x: You **Must** Be Bot Owner Or Developer")
-    await bot.logout()
-@bot.event
+async def discordmeme(ctx):
+    discordmemes_submissions = reddit.subreddit('discordmemes').hot()
+    post_to_pick = random.randint(1, 10)
+    for i in range(0, post_to_pick):
+        submission = next(x for x in discordmemes_submissions if not x.stickied)
+        await bot.say(submission.url)
+
+
+@bot.command(pass_context=True)
+async def cat(ctx):
+        response = requests.get('https://aws.random.cat/meow')
+        data = response.json()
+        embed = discord.Embed(title= "Cute Cat!", color=0x23272A)
+        embed.set_image(url=f"{data['file']}")
+        await bot.say(embed=embed)
+
+@bot.command(pass_context=True)
+async def dog(ctx):
+        response = requests.get('https://random.dog/woof.json')
+        data = response.json()
+        embed = discord.Embed(color=0x23272A)
+        embed.set_image(url=f"{data['url']}")
+        await bot.say(embed=embed)
+
+@bot.command(pass_context=True)
+async def meme(ctx):
+        response = requests.get('https://some-random-api.ml/meme')
+        data = response.json()
+        embed = discord.Embed(description =f"{data['text']}", color=0x23272A)
+        embed.set_image(url=f"{data['url']}")
+        await bot.say(embed=embed)
+
+@bot.command(pass_context=True)
+async def birb(ctx):
+        response = requests.get('https://some-random-api.ml/birbimg')
+        data = response.json()
+        embed = discord.Embed(color=0x23272A)
+        embed.set_image(url=f"{data['link']}")
+        await bot.say(embed=embed)
+
+@bot.command(pass_context=True)
+async def catfact(ctx):
+        response = requests.get('https://some-random-api.ml/catfact')
+        data = response.json()
+        embed = discord.Embed(title = "A random Cat Fact", description=f"{data['fact']}", color=0x23272A)
+        embed.set_thumbnail(url="https://clipart.info/images/ccovers/1522855947cute-cat-png-cartoon-clip-art.png")
+        await bot.say(embed=embed)
+
+@bot.command(pass_context=True)
+async def shibe(ctx):
+        request = requests.get('http://shibe.online/api/shibes')
+        link = request.json()[0]
+        embed = discord.Embed(title='Shibe', color=0x23272A)
+        embed.set_image(url=link)
+        await bot.say(embed=embed)
+
+@bot.command(pass_context=True)
+async def addxp(ctx, member: discord.Member = None, amount: int = None):
+    if member is None:
+        member = ctx.message.author
+    if not "owner" in [i.name.lower() for i in ctx.message.author.roles]:
+        return await bot.say("{} :x: You are not allowed to use this command!".format(ctx.message.author.mention))
+    xp = add_xp(member.id, amount)
+    embed = discord.Embed(title = "Added XP", description="Added XP to `{}`".format(member.display_name), color=0x23272A)
+    embed.set_thumbnail(url = member.avatar_url)
+    embed.add_field(name="New XP amount", value=xp)
+    embed = await bot.say(embed=embed)
+    await asyncio.sleep(2)
+    await bot.delete_message(embed)
+
+@bot.command(pass_context=True)
+async def removexp(ctx, member: discord.Member = None, amount: int = None):
+    if member is None:
+        member = ctx.message.author
+    if not "owner" in [i.name.lower() for i in ctx.message.author.roles]:
+        return await bot.say("{} :x: You are not allowed to use this command!".format(ctx.message.author.mention))
+    xp = remove_xp(member.id, amount)
+    embed = discord.Embed(title = "Removed XP", description="Removed XP to `{}`".format(member.display_name), color=0x23272A)
+    embed.set_thumbnail(url = member.avatar_url)
+    embed.add_field(name="New XP amount", value=xp)
+    embed = await bot.say(embed=embed)
+    await asyncio.sleep(2)
+    await bot.delete_message(embed)
+
+@bot.command(pass_context=True)
+async def pfp(ctx, member: discord.Member):
+     embed=discord.Embed(title="The users profile picture", color=0x23272A)
+     embed.set_image(url=member.avatar_url)
+     await bot.say(embed=embed)
+
+@bot.command(pass_context=True)
+async def profile(ctx, member: discord.Member = None):
+    if member is None:
+        member = ctx.message.author
+    embed = discord.Embed(title = "The User's Profile", description="User's current XP {}".format(get_xp(member.id)), color=0x23272A)
+    embed.set_thumbnail(url = member.avatar_url)
+    await bot.say(embed=embed)
+
+
+def create_user_if_not_exists(user_id: str):
+    print(user_id)
+    res = c.execute("SELECT COUNT(*) FROM Users WHERE UserID=?", (user_id,))
+    user_count = res.fetchone()[0]
+    print(user_count)
+    if user_count < 1:
+        print("Creating user with id " + str(user_id))
+        c.execute("INSERT INTO Users VALUES (?, ?)", (user_id, 0))
+
+
+def get_xp(user_id: str):
+    create_user_if_not_exists(user_id)
+    res = c.execute("SELECT Xp FROM Users WHERE UserID=?", (user_id,))
+    user_xp = int(res.fetchone()[0])
+    return int(user_xp)
+
+
+def add_xp(user_id, amount: int):
+    xp = int(get_xp(user_id) + amount)
+    c.execute("UPDATE Users SET Xp=? WHERE UserID=?", (xp, user_id))
+    return xp
+
+def remove_xp(user_id, amount: int):
+    xp = int(get_xp(user_id) - amount)
+    c.execute("UPDATE Users SET Xp=? WHERE UserID=?", (xp, user_id))
+    return xp
+
+
+async def on_member_join(member):
+    create_user_if_not_exists(member.id)
+
 async def on_message(message):
+    add_xp(message.author.id, 1)
     await bot.process_commands(message)
-@bot.event
-async def on_member_join(member: discord.Member):
-    if member.server.id == '422083182167588864':
-        embed = discord.Embed(title="User Joined!", description="{} Has Just Joined Us! Welcome them!".format(member.name), color=0x66009D)
-        embed.set_thumbnail(url=member.avatar_url)
-        await bot.send_message(bot.get_channel('437163805512826899'), embed=embed)
-    else:
-        for i in member.server.channels:
-            if i.name.upper() == 'Welcome':
-                chl = i
-
-        embed = discord.Embed(title="User Joined!", description="{} Has Just Joined Us! Welcome them!".format(member.name), color=0x66009D)
-        embed.set_thumbnail(url=member.avatar_url)
-        try:
-            await bot.send_message(chl, embed=embed)
-        except Exception as e:
-            print(e)
-
-
-
-
 
 
 
